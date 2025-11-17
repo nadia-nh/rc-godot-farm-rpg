@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CropData" load_steps=7 format=3 uid="uid://6w5vw3dwptgg"]
+
+[ext_resource type="Script" uid="uid://hd8kfwmv2s2l" path="res://scripts/crop_data.gd" id="1_jm570"]
+[ext_resource type="Texture2D" uid="uid://cv8ypc0fv888q" path="res://assets/Turnip/turnip_growth_0.png" id="1_n08m5"]
+[ext_resource type="Texture2D" uid="uid://ln5xukaobotv" path="res://assets/Turnip/turnip_growth_1.png" id="2_fb1q3"]
+[ext_resource type="Texture2D" uid="uid://d2vexdohj35wq" path="res://assets/Turnip/turnip_growth_2.png" id="3_avv2o"]
+[ext_resource type="Texture2D" uid="uid://be4yofv2i4tru" path="res://assets/Turnip/turnip_growth_3.png" id="4_a12ih"]
+[ext_resource type="Texture2D" uid="uid://dtrp2nllynsaw" path="res://assets/Turnip/turnip_growth_4.png" id="5_b1ko4"]
+
+[resource]
+script = ExtResource("1_jm570")
+crop_assets = Array[Texture]([ExtResource("1_n08m5"), ExtResource("2_fb1q3"), ExtResource("3_avv2o"), ExtResource("4_a12ih"), ExtResource("5_b1ko4")])
+seed_price = 15
+sell_price = 35
+metadata/_custom_type_script = "uid://hd8kfwmv2s2l"

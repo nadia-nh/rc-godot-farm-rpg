@@ -20,6 +20,9 @@ func water() -> void:
 func is_watered() -> bool:
 	return _is_watered
 	
+func get_asset() -> Texture:
+	return _current_asset
+	
 func advance_day() -> void:
 	if is_watered():
 		_update_asset()

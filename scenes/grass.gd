@@ -60,6 +60,8 @@ func harvest_tile():
 		return
 	
 	tile_data.has_crop = false
+	tile_data.crop_data = null
+	tile_data.crop_sprite = null
 	_update_tile_map(TILLED_GRASS_INDEX)
 
 # Plant a crop on this tile if the soil has been tilled
@@ -74,6 +76,15 @@ func plant_tile(crop_resource : CropResource):
 	
 	if tile_data.is_watered:
 		tile_data.crop_data.water()
+	
+	var crop_sprite: Sprite2D = Sprite2D.new()
+	add_child(crop_sprite)
+	# Convert tile coordinates back to world position to ensure
+	# the crop is perfectly centered on the tile. this is more precise
+	# and consistent than using player_pos directly.
+	crop_sprite.global_position = _tile_map.map_to_local(_coords)
+	crop_sprite.texture = tile_data.crop_data._current_asset
+	tile_data.crop_sprite = crop_sprite
 
 func _update_tile_map(index : int):
 	_tile_map.set_cell(_coords, index, Vector2i(0, 0))

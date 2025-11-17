@@ -1,7 +1,6 @@
 class_name GrassTileData
 
-class Info:
-	var isWatered : bool
-	var isTilled : bool
-	var hasCrop : bool
-	var cropResource : CropResource
+var is_watered : bool
+var is_tilled : bool
+var has_crop : bool
+var crop_resource : CropResource

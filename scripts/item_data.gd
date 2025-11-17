@@ -12,16 +12,16 @@ enum Tool {
 
 # Represents a seed item that can be planted.
 class Seed:
-	var cropResource: CropResource
+	var crop_resource: CropResource
 	
-	func _init(_cropResource: CropResource):
-		cropResource = _cropResource
+	func _init(resource: CropResource):
+		crop_resource = resource
 
 # Represents any item the player can hold, either a tool or a seed.
 class Item:
-	var toolData: Tool
-	var seedData: Seed
+	var tool_data: Tool
+	var seed_data: Seed
 	
 	func _init(_tool: Tool, _seed: Seed):
-		toolData = _tool
-		seedData = _seed
+		tool_data = _tool
+		seed_data = _seed

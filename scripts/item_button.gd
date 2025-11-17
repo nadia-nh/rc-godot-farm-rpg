@@ -16,7 +16,7 @@ func _ready() -> void:
 
 # Use the item, when there's no tool it means we have a seed
 func _on_pressed() -> void:
-	match _player_item.toolData:
+	match _player_item.tool_data:
 		ItemData.Tool.HOE:
 			_grass.till_tile()
 		ItemData.Tool.SCYTHE:

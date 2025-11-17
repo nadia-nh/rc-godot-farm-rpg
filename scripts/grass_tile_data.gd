@@ -4,4 +4,4 @@ class Info:
 	var isWatered : bool
 	var isTilled : bool
 	var hasCrop : bool
-	var cropData : CropData
+	var cropResource : CropResource

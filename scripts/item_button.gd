@@ -1,6 +1,6 @@
 extends TextureButton
 
-@export var crop_data : CropData
+@export var crop_resource : CropResource
 @export var tool : ItemData.Tool
 
 var _player_item : ItemData.Item
@@ -8,7 +8,7 @@ var _player_item : ItemData.Item
 @onready var _grass := $"../../../Grass"
 
 func _init() -> void:
-	var player_seed = ItemData.Seed.new(crop_data)
+	var player_seed = ItemData.Seed.new(crop_resource)
 	_player_item = ItemData.Item.new(tool, player_seed)
 
 func _ready() -> void:
@@ -24,4 +24,4 @@ func _on_pressed() -> void:
 		ItemData.Tool.WATER_BUCKET:
 			_grass.water_tile()
 		ItemData.Tool.NONE:
-			_grass.plant_tile(crop_data)
+			_grass.plant_tile(crop_resource)

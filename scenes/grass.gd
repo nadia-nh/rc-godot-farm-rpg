@@ -49,11 +49,11 @@ func harvest_tile():
 	tile_info.hasCrop = false
 
 # Plant a crop on this tile if the soil has been tilled
-func plant_tile(crop_data : CropData):
+func plant_tile(crop_resource : CropResource):
 	var tile_info := _get_tile_info_at_pos(global_position)
 	
 	if not tile_info.isTilled:
 		return
 	
 	tile_info.hasCrop = true
-	tile_info.cropData = crop_data
+	tile_info.cropResource = crop_resource

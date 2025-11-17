@@ -44,14 +44,19 @@ func water_tile():
 		return
 		
 	tile_data.is_watered = true
+	if tile_data.has_crop:
+		tile_data.crop_data.water()
+	
 	_update_tile_map(TILLED_WATERED_INDEX)
 
 # Harvest the crop on this tile if one is present
-# TODO: add check for harvest readiness
 func harvest_tile():
 	var tile_data := _get_tile_data_at_pos(_player.global_position)
 	
 	if not tile_data.has_crop:
+		return
+		
+	if not tile_data.crop_data.can_be_harvested():
 		return
 	
 	tile_data.has_crop = false
@@ -65,7 +70,10 @@ func plant_tile(crop_resource : CropResource):
 		return
 	
 	tile_data.has_crop = true
-	tile_data.crop_resource = crop_resource
+	tile_data.crop_data = CropData.new(crop_resource)
+	
+	if tile_data.is_watered:
+		tile_data.crop_data.water()
 
 func _update_tile_map(index : int):
 	_tile_map.set_cell(_coords, index, Vector2i(0, 0))

@@ -1,0 +1,7 @@
+# Stores buy / sell prices for a crop type, and its visual assets.
+class_name CropData
+extends Resource
+
+@export var crop_assets: Array[Texture]
+@export var seed_price: int = 10
+@export var sell_price: int = 20

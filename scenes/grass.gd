@@ -24,7 +24,7 @@ func _get_tile_data_at_pos(player_pos) -> GrassTileData:
 func till_tile():
 	var tile_data := _get_tile_data_at_pos(_player.global_position)
 	
-	if tile_data.has_crop:
+	if tile_data.has_crop():
 		return
 	
 	if tile_data.is_tilled:
@@ -44,7 +44,7 @@ func water_tile():
 		return
 		
 	tile_data.is_watered = true
-	if tile_data.has_crop:
+	if tile_data.has_crop():
 		tile_data.crop_data.water()
 	
 	_update_tile_map(TILLED_WATERED_INDEX)
@@ -53,13 +53,12 @@ func water_tile():
 func harvest_tile():
 	var tile_data := _get_tile_data_at_pos(_player.global_position)
 	
-	if not tile_data.has_crop:
+	if not tile_data.has_crop():
 		return
 		
 	if not tile_data.crop_data.can_be_harvested():
 		return
 	
-	tile_data.has_crop = false
 	tile_data.crop_data = null
 	tile_data.crop_sprite = null
 	_update_tile_map(TILLED_GRASS_INDEX)
@@ -71,7 +70,6 @@ func plant_tile(crop_resource : CropResource):
 	if not tile_data.is_tilled:
 		return
 	
-	tile_data.has_crop = true
 	tile_data.crop_data = CropData.new(crop_resource)
 	
 	if tile_data.is_watered:

@@ -1,10 +1,16 @@
 class_name Grass
 extends Node2D
 
+# Indices for the tile maps
+const GRASS_INDEX = 0
+const TILLED_GRASS_INDEX = 1
+const TILLED_WATERED_INDEX = 2
+
 var _tile_data_at_pos: Dictionary[Vector2i, GrassTileData]
 var _coords : Vector2i
 
 @onready var _tile_map: TileMapLayer = $GrassTileMap
+@onready var _player: CharacterBody2D = $"../Player"
 
 func _ready():
 	for cell in _tile_map.get_used_cells():
@@ -16,7 +22,7 @@ func _get_tile_data_at_pos(player_pos) -> GrassTileData:
 
 # Till this tile if it doesn't have a crop and is not already tilled
 func till_tile():
-	var tile_data := _get_tile_data_at_pos(global_position)
+	var tile_data := _get_tile_data_at_pos(_player.global_position)
 	
 	if tile_data.has_crop:
 		return
@@ -25,10 +31,11 @@ func till_tile():
 		return
 	
 	tile_data.is_tilled = true
+	_update_tile_map(TILLED_GRASS_INDEX)
 
 # Water this tile only if it's already tilled and not watered
 func water_tile():
-	var tile_data := _get_tile_data_at_pos(global_position)
+	var tile_data := _get_tile_data_at_pos(_player.global_position)
 	
 	if not tile_data.is_tilled:
 		return
@@ -37,23 +44,28 @@ func water_tile():
 		return
 		
 	tile_data.is_watered = true
+	_update_tile_map(TILLED_WATERED_INDEX)
 
 # Harvest the crop on this tile if one is present
 # TODO: add check for harvest readiness
 func harvest_tile():
-	var tile_data := _get_tile_data_at_pos(global_position)
+	var tile_data := _get_tile_data_at_pos(_player.global_position)
 	
 	if not tile_data.has_crop:
 		return
 	
 	tile_data.has_crop = false
+	_update_tile_map(TILLED_GRASS_INDEX)
 
 # Plant a crop on this tile if the soil has been tilled
 func plant_tile(crop_resource : CropResource):
-	var tile_data := _get_tile_data_at_pos(global_position)
+	var tile_data := _get_tile_data_at_pos(_player.global_position)
 	
 	if not tile_data.is_tilled:
 		return
 	
 	tile_data.has_crop = true
 	tile_data.crop_resource = crop_resource
+
+func _update_tile_map(index : int):
+	_tile_map.set_cell(_coords, index, Vector2i(0, 0))

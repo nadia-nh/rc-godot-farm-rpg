@@ -1,6 +1,7 @@
 extends Node
 
 signal day_changed()
+signal item_used()
 
 var _current_day : int
 

@@ -11,8 +11,8 @@ var _current_index : int
 func _init(resource : CropResource) -> void:
 	_crop_resource = resource
 	_is_watered = false
-	_days_to_grow = _crop_resource.crop_assets.size()
-	_current_asset =_crop_resource.crop_assets[0]
+	_days_to_grow = _crop_resource.crop_assets.size() - 1
+	_current_asset = _crop_resource.crop_assets[0]
 
 func water() -> void:
 	_is_watered = true
@@ -26,11 +26,11 @@ func get_asset() -> Texture:
 func advance_day() -> void:
 	if is_watered():
 		_update_asset()
-		_days_to_grow -= 1
+		_days_to_grow = max(0, _days_to_grow - 1)
 		_is_watered = false
 
 func can_be_harvested() -> bool:
-	return _days_to_grow == 0
+	return _days_to_grow <= 0
 
 func _update_asset():
 	if _days_to_grow <= 0:

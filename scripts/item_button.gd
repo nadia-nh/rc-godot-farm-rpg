@@ -5,7 +5,8 @@ extends TextureButton
 
 var _player_item : ItemData.Item
 
-@onready var _grass := $"../../../Grass"
+# HBoxContainer/UILayer/Main/
+@onready var _grass := $"../../../FarmManager/Grass"
 
 func _init() -> void:
 	var player_seed = ItemData.Seed.new(crop_resource)

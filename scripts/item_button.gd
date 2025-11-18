@@ -5,24 +5,13 @@ extends TextureButton
 
 var _player_item : ItemData.Item
 
-# HBoxContainer/UILayer/Main/
-@onready var _grass := $"../../../FarmManager/Grass"
-
 func _init() -> void:
+	pass
+
+func _ready() -> void:
 	var player_seed = ItemData.Seed.new(crop_resource)
 	_player_item = ItemData.Item.new(tool, player_seed)
 
-func _ready() -> void:
-	pass
-
 # Use the item, when there's no tool it means we have a seed
 func _on_pressed() -> void:
-	match tool:
-		ItemData.Tool.HOE:
-			_grass.till_tile()
-		ItemData.Tool.SCYTHE:
-			_grass.harvest_tile()
-		ItemData.Tool.WATER_BUCKET:
-			_grass.water_tile()
-		ItemData.Tool.NONE:
-			_grass.plant_tile(crop_resource)
+	GameManager.select_item(_player_item)

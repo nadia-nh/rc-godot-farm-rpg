@@ -6,20 +6,26 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_tbgi4"]
 line_spacing = 0.0
-font_size = 7
+font_size = 10
 font_color = Color(0, 0.5882353, 0.26666668, 1)
+outline_size = 1
+outline_color = Color(0, 0.14509805, 0.043137256, 1)
 
 [node name="ItemButton" type="TextureButton"]
 offset_left = -13.0
 offset_top = 80.0
-offset_right = 19.0
-offset_bottom = 112.0
+offset_right = 27.0
+offset_bottom = 120.0
+scale = Vector2(1.2, 1.2)
+size_flags_horizontal = 3
+size_flags_vertical = 3
 texture_normal = ExtResource("1_dk8qb")
+stretch_mode = 0
 script = ExtResource("2_plkct")
 
 [node name="Item" type="Sprite2D" parent="."]
-position = Vector2(5, 5.000001)
-scale = Vector2(1.8750001, 1.770833)
+position = Vector2(6, 6)
+scale = Vector2(2.277778, 2.1514647)
 texture = ExtResource("3_8237l")
 centered = false
 
@@ -30,11 +36,13 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -16.0
-offset_top = -16.000015
+offset_left = -22.5
+offset_top = -19.166666
+offset_right = -6.5
+offset_bottom = -3.1666489
 grow_horizontal = 0
 grow_vertical = 0
-text = "0"
+text = "20"
 label_settings = SubResource("LabelSettings_tbgi4")
-horizontal_alignment = 1
+horizontal_alignment = 2
 vertical_alignment = 1

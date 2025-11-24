@@ -3,12 +3,31 @@ class_name FarmManager
 
 @onready var _grass: Node2D = $"Grass"
 
+var _potato_resource = preload("res://resources/potato_crop.tres")
+var _turnip_resource = preload("res://resources/turnip_crop.tres")
+var _items_by_action : Dictionary[String, ItemData.Item]
+
 func _init() -> void:
 	pass
 
+func _build_item(item_tool, item_seed):
+	return ItemData.Item.new(item_tool, item_seed)
 func _ready() -> void:
 	GameManager.day_changed.connect(_on_day_changed)
 	GameManager.item_used.connect(_on_item_used)
+	
+	var potato_seed = ItemData.Seed.new(_potato_resource)
+	var turnip_seed = ItemData.Seed.new(_turnip_resource)
+	_items_by_action = {
+		"tool_hoe" : _build_item(ItemData.Tool.HOE, null),
+		"tool_scythe" : _build_item(ItemData.Tool.SCYTHE, null),
+		"tool_water": _build_item(ItemData.Tool.WATER_BUCKET, null),
+		"seed_potato": _build_item(ItemData.Tool.NONE, potato_seed),
+		"seed_turnip": _build_item(ItemData.Tool.NONE, turnip_seed)
+	}
+
+func get_item_from_action(action: String) -> ItemData.Item:
+	return _items_by_action[action]
 
 func _on_day_changed() -> void:
 	_grass.on_day_changed()

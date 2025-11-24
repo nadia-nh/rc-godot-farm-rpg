@@ -7,7 +7,7 @@
 [sub_resource type="LabelSettings" id="LabelSettings_tbgi4"]
 line_spacing = 0.0
 font_size = 7
-font_color = Color(0.5176471, 0.73333335, 0.17254902, 1)
+font_color = Color(0, 0.5882353, 0.26666668, 1)
 
 [node name="ItemButton" type="TextureButton"]
 offset_left = -13.0

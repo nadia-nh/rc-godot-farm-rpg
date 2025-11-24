@@ -26,4 +26,4 @@ func _physics_process(_delta):
 
 func _select_item(item_tool, item_seed):
 	var item = ItemData.Item.new(item_tool, item_seed)
-	GameManager.select_item(item)
+	GameManager.item_selected.emit(item)

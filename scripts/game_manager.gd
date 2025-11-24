@@ -3,6 +3,7 @@ extends Node
 signal day_changed()
 @warning_ignore("unused_signal")
 signal item_used()
+signal item_selected(item: ItemData.Item)
 
 var _current_day : int
 var _current_item : ItemData.Item
@@ -10,6 +11,7 @@ var _potato_resource = preload("res://resources/potato_crop.tres")
 var _turnip_resource = preload("res://resources/turnip_crop.tres")
 
 func _ready() -> void:
+	item_selected.connect(_on_item_selected)
 	_current_day = 0
 	_current_item = ItemData.Item.new(ItemData.Tool.HOE, null)
 	_set_next_day.call_deferred()
@@ -26,7 +28,7 @@ func get_potato_resource() -> CropResource:
 func get_turnip_resource() -> CropResource:
 	return _turnip_resource
 
-func select_item(item : ItemData.Item) -> void:
+func _on_item_selected(item : ItemData.Item) -> void:
 	_current_item = item
 
 # Increases the day, and emits the corresponding signal

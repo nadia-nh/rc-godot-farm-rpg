@@ -1,6 +1,6 @@
-class_name Grass
+class_name GrassLand
 extends Node2D
-## Grass
+## GrassLand
 ##
 ## Manages the tile map and updates tiles based on their state. Handles tilling,
 ## watering, harvesting, and planting, and updates tiles when the day changes.

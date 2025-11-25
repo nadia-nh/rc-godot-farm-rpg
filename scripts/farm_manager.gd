@@ -2,7 +2,7 @@ extends Node
 class_name FarmManager
 ## FarmManager
 ##
-## Handles the high-level interaction between the Player and the Grass.
+## Handles the high-level interaction between the Player and the GrassLand.
 ## Tracks seed quantities for each crop and determines whether a crop can be
 ## planted or a new seed can be bought.
 
@@ -11,7 +11,7 @@ var _turnip_resource = preload("res://resources/turnip_crop.tres")
 var _items_by_action : Dictionary[String, ItemData.Item]
 var _seed_quantities : Dictionary[CropResource, int]
 
-@onready var _grass: Node2D = $"Grass"
+@onready var _grassland: Node2D = $"GrassLand"
 @onready var _player: CharacterBody2D = $"Player"
 
 func _init() -> void:
@@ -69,20 +69,20 @@ func _build_item(item_tool, item_seed):
 	return ItemData.Item.new(item_tool, item_seed)
 
 func _on_day_changed() -> void:
-	_grass.on_day_changed()
+	_grassland.on_day_changed()
 
 func _on_item_used() -> void:
 	var item = GameManager.get_current_item()
 	var player_pos = _player.global_position
 	match item.tool_data:
 		ItemData.Tool.HOE:
-			_grass.till_tile(player_pos)
+			_grassland.till_tile(player_pos)
 		ItemData.Tool.SCYTHE:
-			_grass.harvest_tile(player_pos)
+			_grassland.harvest_tile(player_pos)
 		ItemData.Tool.WATER_BUCKET:
-			_grass.water_tile(player_pos)
+			_grassland.water_tile(player_pos)
 		ItemData.Tool.NONE:
 			if can_plant_crop(item.seed_data.crop_resource):
-				_grass.plant_tile(item.seed_data.crop_resource, player_pos)
+				_grassland.plant_tile(item.seed_data.crop_resource, player_pos)
 			elif can_buy_seed(item.seed_data.crop_resource):
 				buy_seed(item.seed_data.crop_resource)

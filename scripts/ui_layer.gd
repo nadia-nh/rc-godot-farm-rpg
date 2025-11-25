@@ -8,7 +8,7 @@ var item_buttons : Array[ItemButton]
 func _ready() -> void:
 	GameManager.item_selected.connect(_on_item_selected)
 	GameManager.day_changed.connect(_on_day_changed)
-	GameManager.seed_quantity_updated.connect(_on_seed_quantity_updated)
+
 	for child in buttons_container.get_children():
 		if child is ItemButton:
 			item_buttons.append(child)
@@ -24,11 +24,6 @@ func _on_day_changed() -> void:
 	next_day_button.show_button_selected()
 	var timer = get_tree().create_timer(0.1)
 	timer.timeout.connect(next_day_button.show_button_unselected)
-
-func _on_seed_quantity_updated(crop_resource: CropResource, quantity: int) -> void:
-	for button in item_buttons:
-		if _button_has_seed(button, crop_resource):
-			button.update_quantity_text(quantity)
 
 func _button_has_item(button: ItemButton, item: ItemData.Item) -> bool:
 	return (_button_has_same_tool(button, item) and

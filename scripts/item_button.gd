@@ -12,6 +12,7 @@ func _init() -> void:
 
 func _ready() -> void:
 	pressed.connect(_on_mouse_pressed)
+	GameManager.seed_quantity_updated.connect(_on_seed_quantity_updated)
 	var player_seed = ItemData.Seed.new(crop_resource)
 	_player_item = ItemData.Item.new(tool, player_seed)
 
@@ -27,3 +28,8 @@ func update_quantity_text(quantity: int) -> void:
 # Use the item, when there's no tool it means we have a seed
 func _on_mouse_pressed() -> void:
 	GameManager.item_selected.emit(_player_item)
+
+func _on_seed_quantity_updated(
+	crop_resource_for_seed: CropResource, quantity: int) -> void:
+	if crop_resource == crop_resource_for_seed:
+		update_quantity_text(quantity)

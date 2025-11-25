@@ -13,6 +13,7 @@ var _coords : Vector2i
 
 @onready var _tile_map: TileMapLayer = $GrassTileMap
 @onready var _player: CharacterBody2D = $"../Player"
+@onready var _farm_manager: FarmManager = $".."
 
 func _ready():
 	for cell in _tile_map.get_used_cells():
@@ -68,6 +69,8 @@ func plant_tile(crop_resource : CropResource):
 	
 	if not tile_data.is_tilled:
 		return
+	
+	_farm_manager.use_seed(crop_resource)
 	
 	var crop: CropNode = _crop_scene.instantiate()
 	add_child(crop)

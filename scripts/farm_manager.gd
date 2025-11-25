@@ -6,6 +6,7 @@ class_name FarmManager
 var _potato_resource = preload("res://resources/potato_crop.tres")
 var _turnip_resource = preload("res://resources/turnip_crop.tres")
 var _items_by_action : Dictionary[String, ItemData.Item]
+var _seed_quantities : Dictionary[CropResource, int]
 
 func _init() -> void:
 	pass
@@ -26,9 +27,28 @@ func _ready() -> void:
 		"seed_potato": _build_item(ItemData.Tool.NONE, potato_seed),
 		"seed_turnip": _build_item(ItemData.Tool.NONE, turnip_seed)
 	}
+	_seed_quantities = {
+		_potato_resource : 2,
+		_turnip_resource : 2
+	}
 
 func get_item_from_action(action: String) -> ItemData.Item:
+	if not action in _items_by_action.keys():
+		return null
+
 	return _items_by_action[action]
+
+func can_plant_crop(crop: CropResource) -> bool:
+	if not crop in _seed_quantities.keys():
+		return false
+
+	return _seed_quantities[crop] > 0
+
+func use_seed(crop: CropResource) -> void:
+	if not crop in _seed_quantities.keys():
+		return
+
+	_seed_quantities[crop] -= 1
 
 func _on_day_changed() -> void:
 	_grass.on_day_changed()
@@ -43,4 +63,5 @@ func _on_item_used() -> void:
 		ItemData.Tool.WATER_BUCKET:
 			_grass.water_tile()
 		ItemData.Tool.NONE:
-			_grass.plant_tile(item.seed_data.crop_resource)
+			if can_plant_crop(item.seed_data.crop_resource):
+				_grass.plant_tile(item.seed_data.crop_resource)

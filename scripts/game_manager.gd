@@ -4,6 +4,8 @@ signal day_changed()
 @warning_ignore("unused_signal")
 signal item_used()
 signal item_selected(item: ItemData.Item)
+@warning_ignore("unused_signal")
+signal seed_quantity_updated(cropResource: CropResource, quantity: int)
 
 var _current_day : int
 var _current_item : ItemData.Item

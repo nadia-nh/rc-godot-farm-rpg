@@ -49,6 +49,7 @@ func use_seed(crop: CropResource) -> void:
 		return
 
 	_seed_quantities[crop] -= 1
+	GameManager.seed_quantity_updated.emit(crop, _seed_quantities[crop])
 
 func _on_day_changed() -> void:
 	_grass.on_day_changed()

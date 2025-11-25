@@ -12,6 +12,7 @@ func _init() -> void:
 
 func _build_item(item_tool, item_seed):
 	return ItemData.Item.new(item_tool, item_seed)
+
 func _ready() -> void:
 	GameManager.day_changed.connect(_on_day_changed)
 	GameManager.item_used.connect(_on_item_used)

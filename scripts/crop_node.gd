@@ -22,14 +22,11 @@ func water() -> void:
 	_crop_data.set_watered(true)
 
 func on_new_day() -> void:
-	if _crop_data.is_watered():
-		_crop_data.set_watered(false)
-		
-		if can_be_harvested():
-			return
-		
-		_current_index += 1
-		sprite.texture = _crop_data.get_asset_at_index(_current_index)
+	if not _crop_data.is_watered():
+		return
+
+	_crop_data.set_watered(false)
+	_update_sprite_texture()
 
 func clear() -> void:
 	sprite.texture = null
@@ -39,3 +36,10 @@ func get_crop_resource() -> CropResource:
 		return null
 	
 	return _crop_data._crop_resource
+
+func _update_sprite_texture() -> void:
+	if can_be_harvested():
+		return
+
+	_current_index += 1
+	sprite.texture = _crop_data.get_asset_at_index(_current_index)

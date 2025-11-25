@@ -1,12 +1,13 @@
 extends Node
 class_name FarmManager
 
-@onready var _grass: Node2D = $"Grass"
-
 var _potato_resource = preload("res://resources/potato_crop.tres")
 var _turnip_resource = preload("res://resources/turnip_crop.tres")
 var _items_by_action : Dictionary[String, ItemData.Item]
 var _seed_quantities : Dictionary[CropResource, int]
+
+@onready var _grass: Node2D = $"Grass"
+@onready var _player: CharacterBody2D = $"Player"
 
 func _init() -> void:
 	pass
@@ -59,13 +60,14 @@ func _on_day_changed() -> void:
 
 func _on_item_used() -> void:
 	var item = GameManager.get_current_item()
+	var player_pos = _player.global_position
 	match item.tool_data:
 		ItemData.Tool.HOE:
-			_grass.till_tile()
+			_grass.till_tile(player_pos)
 		ItemData.Tool.SCYTHE:
-			_grass.harvest_tile()
+			_grass.harvest_tile(player_pos)
 		ItemData.Tool.WATER_BUCKET:
-			_grass.water_tile()
+			_grass.water_tile(player_pos)
 		ItemData.Tool.NONE:
 			if can_plant_crop(item.seed_data.crop_resource):
-				_grass.plant_tile(item.seed_data.crop_resource)
+				_grass.plant_tile(item.seed_data.crop_resource, player_pos)

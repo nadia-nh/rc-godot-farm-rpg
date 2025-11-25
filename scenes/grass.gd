@@ -12,7 +12,6 @@ var _watered_tiles : Dictionary[Vector2i, GrassTileData]
 var _coords : Vector2i
 
 @onready var _tile_map: TileMapLayer = $GrassTileMap
-@onready var _player: CharacterBody2D = $"../Player"
 @onready var _farm_manager: FarmManager = $".."
 
 func _ready():
@@ -20,8 +19,8 @@ func _ready():
 		_tile_data_at_pos[cell] = GrassTileData.new()
 
 # Till this tile if it doesn't have a crop and is not already tilled
-func till_tile():
-	var tile_data := _get_tile_data_at_pos(_player.global_position)
+func till_tile(player_pos: Vector2):
+	var tile_data := _get_tile_data_at_pos(player_pos)
 	
 	if tile_data.has_crop():
 		return
@@ -33,8 +32,8 @@ func till_tile():
 	_update_tile_map(_coords, TILLED_GRASS_INDEX)
 
 # Water this tile only if it's already tilled and not watered
-func water_tile():
-	var tile_data := _get_tile_data_at_pos(_player.global_position)
+func water_tile(player_pos: Vector2):
+	var tile_data := _get_tile_data_at_pos(player_pos)
 	
 	if not tile_data.is_tilled:
 		return
@@ -50,8 +49,8 @@ func water_tile():
 	_update_tile_map(_coords, TILLED_WATERED_INDEX)
 
 # Harvest the crop on this tile if one is present
-func harvest_tile():
-	var tile_data := _get_tile_data_at_pos(_player.global_position)
+func harvest_tile(player_pos: Vector2):
+	var tile_data := _get_tile_data_at_pos(player_pos)
 	
 	if not tile_data.has_crop():
 		return
@@ -66,8 +65,8 @@ func harvest_tile():
 	_watered_tiles.erase(_coords)
 
 # Plant a crop on this tile if the soil has been tilled
-func plant_tile(crop_resource : CropResource):
-	var tile_data := _get_tile_data_at_pos(_player.global_position)
+func plant_tile(crop_resource : CropResource, player_pos: Vector2):
+	var tile_data := _get_tile_data_at_pos(player_pos)
 	
 	if not tile_data.is_tilled:
 		return
@@ -99,7 +98,7 @@ func on_day_changed() -> void:
 	
 	_watered_tiles.clear()
 
-func _get_tile_data_at_pos(player_pos) -> GrassTileData:
+func _get_tile_data_at_pos(player_pos: Vector2) -> GrassTileData:
 	_coords = _tile_map.local_to_map(player_pos)
 	return _tile_data_at_pos[_coords]
 

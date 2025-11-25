@@ -33,3 +33,9 @@ func on_new_day() -> void:
 
 func clear() -> void:
 	sprite.texture = null
+
+func get_crop_resource() -> CropResource:
+	if not is_instance_valid(_crop_data):
+		return null
+	
+	return _crop_data._crop_resource

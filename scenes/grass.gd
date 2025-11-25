@@ -59,6 +59,8 @@ func harvest_tile():
 	if not tile_data.crop_node.can_be_harvested():
 		return
 	
+	_farm_manager.sell_crop(tile_data.crop_node.get_crop_resource())
+	
 	tile_data.crop_node.clear()
 	tile_data.crop_node = null
 	_watered_tiles.erase(_coords)

@@ -2,17 +2,22 @@ extends Node
 
 signal day_changed()
 @warning_ignore("unused_signal")
+signal money_updated(quantity: int)
+@warning_ignore("unused_signal")
 signal item_used()
 signal item_selected(item: ItemData.Item)
 @warning_ignore("unused_signal")
 signal seed_quantity_updated(cropResource: CropResource, quantity: int)
 
 var _current_day : int
+var _current_money : int
 var _current_item : ItemData.Item
 
 func _ready() -> void:
 	item_selected.connect(_on_item_selected)
 
+	_current_money = 0
+	add_money.call_deferred(20)
 	_current_day = 0
 	_set_next_day.call_deferred()
 	_set_item.call_deferred(ItemData.Item.new(ItemData.Tool.HOE, null))
@@ -22,6 +27,11 @@ func get_current_day() -> int:
 
 func get_current_item() -> ItemData.Item:
 	return _current_item
+
+# Increases the money, and emits the corresponding signal
+func add_money(money: int) -> void:
+	_current_money += money
+	money_updated.emit(_current_money)
 
 func _on_item_selected(item : ItemData.Item) -> void:
 	_current_item = item

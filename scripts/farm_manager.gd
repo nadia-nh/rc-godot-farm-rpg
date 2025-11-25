@@ -51,6 +51,9 @@ func use_seed(crop: CropResource) -> void:
 	_seed_quantities[crop] -= 1
 	GameManager.seed_quantity_updated.emit(crop, _seed_quantities[crop])
 
+func sell_crop(crop: CropResource) -> void:
+	GameManager.add_money(crop.sell_price)
+
 func _on_day_changed() -> void:
 	_grass.on_day_changed()
 

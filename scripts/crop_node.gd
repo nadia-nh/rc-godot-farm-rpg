@@ -1,10 +1,14 @@
 class_name CropNode
 extends Node2D
-
-@onready var sprite = $CropSprite
+## CropNode
+##
+## Handles crop growth, using CropData to track state, and updates the sprite
+## when needed.
 
 var _crop_data : CropData
 var _current_index : int
+
+@onready var sprite = $CropSprite
 
 func _ready() -> void:
 	pass
@@ -34,7 +38,7 @@ func clear() -> void:
 func get_crop_resource() -> CropResource:
 	if not is_instance_valid(_crop_data):
 		return null
-	
+
 	return _crop_data._crop_resource
 
 func _update_sprite_texture() -> void:

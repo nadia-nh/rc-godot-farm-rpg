@@ -1,10 +1,16 @@
 class_name ItemButton
 extends TextureButton
+## ItemButton
+##
+## Uses exported crop resource and tool data to build its item. Updates seed
+## quantity text via the relevant signal, notifies the GameManager when
+## selected, and provides visual update methods for the UILayer.
 
 @export var crop_resource : CropResource
 @export var tool : ItemData.Tool
 
 var _player_item : ItemData.Item
+
 @onready var quantity_text : Label = $Text
 
 func _init() -> void:
@@ -25,7 +31,7 @@ func show_button_unselected() -> void:
 func update_quantity_text(quantity: int) -> void:
 	quantity_text.text = str(quantity)
 
-# Use the item, when there's no tool it means we have a seed
+# Inform game manager that the item was selected
 func _on_mouse_pressed() -> void:
 	GameManager.item_selected.emit(_player_item)
 

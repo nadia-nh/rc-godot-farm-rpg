@@ -1,5 +1,7 @@
-# Contains data structures for tools and seed items
 class_name ItemData
+## ItemData
+##
+## Stores the data for a single player item, whether it’s a tool or a seed.
 
 # Represents the different tools the player can use.
 # NONE is used when no tool is selected.
@@ -13,7 +15,7 @@ enum Tool {
 # Represents a seed item that can be planted.
 class Seed:
 	var crop_resource: CropResource
-	
+
 	func _init(resource: CropResource):
 		crop_resource = resource
 
@@ -21,7 +23,7 @@ class Seed:
 class Item:
 	var tool_data: Tool
 	var seed_data: Seed
-	
+
 	func _init(_tool: Tool, _seed: Seed):
 		tool_data = _tool
 		seed_data = _seed

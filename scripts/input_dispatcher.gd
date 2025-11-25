@@ -1,6 +1,12 @@
+class_name InputDispatcher
 extends Node
+## InputDispatcher
+##
+## Handles keyboard input and notifies the GameManager about relevant state
+## updates, including day changes, item use and selection.
 
 var item_actions : Array[String]
+
 @onready var farm_manager = $"../FarmManager"
 
 func _ready() -> void:

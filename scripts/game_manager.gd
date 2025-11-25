@@ -1,4 +1,9 @@
 extends Node
+## GameManager
+##
+## Autoload singleton that manages core game state: current day, player money,
+## and selected item. Declares signals for global use and emits the ones
+## tied to day, money, and item selected changes.
 
 signal day_changed()
 signal money_updated(quantity: int)
@@ -27,7 +32,6 @@ func get_current_day() -> int:
 func get_current_item() -> ItemData.Item:
 	return _current_item
 
-# Increases the money, and emits the corresponding signal
 func add_money(money: int) -> void:
 	_change_money(money)
 
@@ -37,7 +41,7 @@ func can_spend_money(amount: int) -> bool:
 func spend_money(amount: int) -> void:
 	if not can_spend_money(amount):
 		return
-	
+
 	_change_money(amount * -1)
 
 func _on_item_selected(item : ItemData.Item) -> void:
@@ -47,10 +51,11 @@ func _set_item(item : ItemData.Item) -> void:
 	item_selected.emit(item)
 
 # Increases the day, and emits the corresponding signal
-func _set_next_day():
+func _set_next_day() -> void:
 	_current_day += 1
 	day_changed.emit()
 
+# Changes the money by the given amount, and emits the corresponding signal
 func _change_money(amount: int) -> void:
 	_current_money += amount
 	money_updated.emit(_current_money)

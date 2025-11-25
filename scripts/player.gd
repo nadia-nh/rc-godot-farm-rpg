@@ -1,4 +1,9 @@
+class_name Player
 extends CharacterBody2D
+## Player
+##
+## Handles 2D movement and updates the animation to match the player's
+## walking or idle direction.
 
 @export var move_speed: float = 30.0
 
@@ -12,7 +17,7 @@ func _ready():
 func get_input():
 	var input_direction = Input.get_vector(
 		"move_left", "move_right", "move_up", "move_down")
-	
+
 	# Check if the user has actually moved
 	if (input_direction != Vector2.ZERO):
 		facing_direction = input_direction

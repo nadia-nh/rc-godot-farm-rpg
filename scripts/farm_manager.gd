@@ -1,5 +1,10 @@
 extends Node
 class_name FarmManager
+## FarmManager
+##
+## Handles the high-level interaction between the Player and the Grass.
+## Tracks seed quantities for each crop and determines whether a crop can be
+## planted or a new seed can be bought.
 
 var _potato_resource = preload("res://resources/potato_crop.tres")
 var _turnip_resource = preload("res://resources/turnip_crop.tres")
@@ -12,13 +17,10 @@ var _seed_quantities : Dictionary[CropResource, int]
 func _init() -> void:
 	pass
 
-func _build_item(item_tool, item_seed):
-	return ItemData.Item.new(item_tool, item_seed)
-
 func _ready() -> void:
 	GameManager.day_changed.connect(_on_day_changed)
 	GameManager.item_used.connect(_on_item_used)
-	
+
 	var potato_seed = ItemData.Seed.new(_potato_resource)
 	var turnip_seed = ItemData.Seed.new(_turnip_resource)
 	_items_by_action = {
@@ -62,6 +64,9 @@ func buy_seed(crop: CropResource) -> void:
 	GameManager.spend_money(crop.seed_price)
 	_seed_quantities[crop] += 1
 	GameManager.seed_quantity_updated.emit(crop, _seed_quantities[crop])
+
+func _build_item(item_tool, item_seed):
+	return ItemData.Item.new(item_tool, item_seed)
 
 func _on_day_changed() -> void:
 	_grass.on_day_changed()

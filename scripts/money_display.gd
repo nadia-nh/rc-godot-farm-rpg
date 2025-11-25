@@ -1,4 +1,8 @@
+class_name MoneyDisplay
 extends TextureRect
+## MoneyDisplay
+##
+## Updates the displayed money amount when the player's money changes.
 
 @onready var money_text = $MoneyText
 

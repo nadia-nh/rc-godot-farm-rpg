@@ -1,4 +1,10 @@
+class_name UILayer
 extends CanvasLayer
+## UILayer
+##
+## Handles UI updates for the item buttons and the next-day button.
+## Makes sure the item buttons visually reflect the selected tool, and
+## updates the next-day button to show when it has been pressed.
 
 var item_buttons : Array[ItemButton]
 
@@ -43,5 +49,5 @@ func _button_has_same_tool(button: ItemButton, item: ItemData.Item) -> bool:
 func _button_has_same_seed(button: ItemButton, item: ItemData.Item) -> bool:
 	if (item.tool_data != ItemData.Tool.NONE):
 		return true
-	
+
 	return _button_has_seed(button, item.seed_data.crop_resource)

@@ -1,4 +1,8 @@
 class_name GrassTileData
+## GrassTileData
+##
+## Stores the state of a tile, whether it's tilled or watered, and holds a
+## reference to its CropNode if present.
 
 var is_watered : bool
 var is_tilled : bool
@@ -11,4 +15,3 @@ func _init() -> void:
 
 func has_crop() -> bool:
 	return is_instance_valid(crop_node)
-	

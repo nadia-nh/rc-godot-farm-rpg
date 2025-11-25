@@ -55,6 +55,14 @@ func use_seed(crop: CropResource) -> void:
 func sell_crop(crop: CropResource) -> void:
 	GameManager.add_money(crop.sell_price)
 
+func can_buy_seed(crop: CropResource) -> bool:
+	return GameManager.can_spend_money(crop.seed_price)
+
+func buy_seed(crop: CropResource) -> void:
+	GameManager.spend_money(crop.seed_price)
+	_seed_quantities[crop] += 1
+	GameManager.seed_quantity_updated.emit(crop, _seed_quantities[crop])
+
 func _on_day_changed() -> void:
 	_grass.on_day_changed()
 
@@ -71,3 +79,5 @@ func _on_item_used() -> void:
 		ItemData.Tool.NONE:
 			if can_plant_crop(item.seed_data.crop_resource):
 				_grass.plant_tile(item.seed_data.crop_resource, player_pos)
+			elif can_buy_seed(item.seed_data.crop_resource):
+				buy_seed(item.seed_data.crop_resource)

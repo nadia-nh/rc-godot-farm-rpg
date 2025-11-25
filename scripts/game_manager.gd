@@ -1,7 +1,6 @@
 extends Node
 
 signal day_changed()
-@warning_ignore("unused_signal")
 signal money_updated(quantity: int)
 @warning_ignore("unused_signal")
 signal item_used()
@@ -17,7 +16,7 @@ func _ready() -> void:
 	item_selected.connect(_on_item_selected)
 
 	_current_money = 0
-	add_money.call_deferred(20)
+	_change_money.call_deferred(20)
 	_current_day = 0
 	_set_next_day.call_deferred()
 	_set_item.call_deferred(ItemData.Item.new(ItemData.Tool.HOE, null))
@@ -30,8 +29,16 @@ func get_current_item() -> ItemData.Item:
 
 # Increases the money, and emits the corresponding signal
 func add_money(money: int) -> void:
-	_current_money += money
-	money_updated.emit(_current_money)
+	_change_money(money)
+
+func can_spend_money(amount: int) -> bool:
+	return _current_money >= amount
+
+func spend_money(amount: int) -> void:
+	if not can_spend_money(amount):
+		return
+	
+	_change_money(amount * -1)
 
 func _on_item_selected(item : ItemData.Item) -> void:
 	_current_item = item
@@ -43,3 +50,7 @@ func _set_item(item : ItemData.Item) -> void:
 func _set_next_day():
 	_current_day += 1
 	day_changed.emit()
+
+func _change_money(amount: int) -> void:
+	_current_money += amount
+	money_updated.emit(_current_money)

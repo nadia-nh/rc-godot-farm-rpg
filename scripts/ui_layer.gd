@@ -10,14 +10,18 @@ var item_buttons : Array[ItemButton]
 
 @onready var buttons_container = $ItemButtonContainer
 @onready var next_day_button = $NextDayButton
+@onready var money_display = $MoneyDisplay
 
 func _ready() -> void:
 	GameManager.item_selected.connect(_on_item_selected)
 	GameManager.day_changed.connect(_on_day_changed)
+	GameManager.money_updated.connect(_on_money_updated)
+	GameManager.seed_quantity_updated.connect(_on_seed_quantity_updated)
 
 	for child in buttons_container.get_children():
 		if child is ItemButton:
 			item_buttons.append(child)
+			child.pressed.connect(_on_item_pressed.bind(child))
 
 func _on_item_selected(item: ItemData.Item) -> void:
 	for button in item_buttons:
@@ -30,6 +34,19 @@ func _on_day_changed() -> void:
 	next_day_button.show_button_selected()
 	var timer = get_tree().create_timer(0.1)
 	timer.timeout.connect(next_day_button.show_button_unselected)
+
+func _on_money_updated(quantity: int) -> void:
+	money_display.update_money(quantity)
+
+func _on_seed_quantity_updated(
+	crop_resource_for_seed: CropResource, quantity: int) -> void:
+	for button in item_buttons:
+		if _button_has_same_seed(button, crop_resource_for_seed):
+			button.update_quantity_text(quantity)
+
+# Inform game manager that the item was selected
+func _on_item_pressed(button: ItemButton) -> void:
+	GameManager.item_selected.emit(button.get_item())
 
 func _button_has_item(button: ItemButton, item: ItemData.Item) -> bool:
 	return (_button_has_same_tool(button, item) and

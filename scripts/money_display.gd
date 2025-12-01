@@ -8,12 +8,9 @@ const MAX_QUANTITY: int = 10_000_000
 
 @onready var money_text = $MoneyText
 
-func _ready() -> void:
-	GameManager.money_updated.connect(_on_money_updated)
-
 # Shows the player's money (capped at 10 million) and formats it so
 # the text fits within the width of the asset.
-func _on_money_updated(quantity: int) -> void:
+func update_money(quantity: int) -> void:
 	var num = min(quantity, MAX_QUANTITY)
 	var millions = num / 1_000_000.0
 	var thousands = num / 1_000.0

@@ -1,6 +1,6 @@
-class_name InputDispatcher
+class_name InputController
 extends Node
-## InputDispatcher
+## InputController
 ##
 ## Handles keyboard input and notifies the GameManager about relevant state
 ## updates, including day changes, item use and selection.

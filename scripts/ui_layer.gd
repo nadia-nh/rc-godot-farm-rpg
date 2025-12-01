@@ -41,7 +41,7 @@ func _on_money_updated(quantity: int) -> void:
 func _on_seed_quantity_updated(
 	crop_resource_for_seed: CropResource, quantity: int) -> void:
 	for button in item_buttons:
-		if _button_has_same_seed(button, crop_resource_for_seed):
+		if button.get_item().contains_seed(crop_resource_for_seed):
 			button.update_quantity_text(quantity)
 
 # Inform game manager that the item was selected
@@ -49,22 +49,4 @@ func _on_item_pressed(button: ItemButton) -> void:
 	GameManager.item_selected.emit(button.get_item())
 
 func _button_has_item(button: ItemButton, item: ItemData.Item) -> bool:
-	return (_button_has_same_tool(button, item) and
-			_button_has_same_seed(button, item))
-
-func _button_has_valid_seed(button: ItemButton) -> bool:
-	return (button.tool == ItemData.Tool.NONE and
-			is_instance_valid(button.crop_resource))
-
-func _button_has_seed(button: ItemButton, crop_resource: CropResource) -> bool:
-	return (_button_has_valid_seed(button) and
-			button.crop_resource == crop_resource)
-
-func _button_has_same_tool(button: ItemButton, item: ItemData.Item) -> bool:
-	return button.tool == item.tool_data
-
-func _button_has_same_seed(button: ItemButton, item: ItemData.Item) -> bool:
-	if (item.tool_data != ItemData.Tool.NONE):
-		return true
-
-	return _button_has_seed(button, item.seed_data.crop_resource)
+	return button.get_item().is_equal_to(item)

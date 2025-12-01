@@ -27,3 +27,31 @@ class Item:
 	func _init(_tool: Tool, _seed: Seed):
 		tool_data = _tool
 		seed_data = _seed
+
+	func get_tool() -> Tool:
+		return tool_data
+
+	func get_crop_resource() -> CropResource:
+		if not is_seed_item():
+			return null
+
+		return seed_data.crop_resource
+
+	func is_equal_to(other: Item) -> bool:
+		return (constains_tool(other.get_tool()) or
+				contains_seed(other.get_crop_resource()))
+
+	func is_tool_item() -> bool:
+		return tool_data != Tool.NONE
+
+	func is_seed_item() -> bool:
+		return (tool_data == Tool.NONE and
+				is_instance_valid(seed_data.crop_resource))
+
+	func constains_tool(tool: Tool) -> bool:
+		return (is_tool_item() and tool_data == tool)
+
+	func contains_seed(crop_resource: CropResource) -> bool:
+		if not is_seed_item():
+			return false
+		return seed_data.crop_resource == crop_resource

@@ -14,7 +14,13 @@ var facing_direction: Vector2
 func _ready():
 	facing_direction = Vector2.DOWN
 
-func get_input():
+func _physics_process(_delta):
+	_get_input()
+	move_and_slide()
+	_animate()
+
+## Gets the inputs and converts them to a direction
+func _get_input():
 	var input_direction = Input.get_vector(
 		"move_left", "move_right", "move_up", "move_down")
 
@@ -23,12 +29,6 @@ func get_input():
 		facing_direction = input_direction
 
 	velocity = input_direction * move_speed
-
-## Gets the inputs and converts them to a direction
-func _physics_process(_delta):
-	get_input()
-	move_and_slide()
-	_animate()
 
 ## Uses velocity and direction to determine which animation to use and plays it
 func _animate():

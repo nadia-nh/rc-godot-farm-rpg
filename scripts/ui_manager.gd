@@ -1,6 +1,6 @@
-class_name UILayer
+class_name UIManager
 extends CanvasLayer
-## UILayer
+## UIManager
 ##
 ## Handles UI updates for the item buttons and the next-day button.
 ## Makes sure the item buttons visually reflect the selected tool, and

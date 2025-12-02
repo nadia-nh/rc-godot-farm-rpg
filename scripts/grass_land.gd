@@ -13,7 +13,6 @@ const TILLED_WATERED_INDEX = 2
 var _crop_scene: PackedScene = preload("res://Scenes/crop_node.tscn")
 var _tile_data_at_pos: Dictionary[Vector2i, GrassTileData]
 var _watered_tiles : Dictionary[Vector2i, GrassTileData]
-var _coords : Vector2i
 
 @onready var _tile_map: TileMapLayer = $GrassTileMap
 @onready var _farm_manager: FarmManager = $".."
@@ -24,7 +23,8 @@ func _ready():
 
 # Till this tile if it doesn't have a crop and is not already tilled
 func till_tile(player_pos: Vector2):
-	var tile_data := _get_tile_data_at_pos(player_pos)
+	var coords := _get_coords_from_pos(player_pos)
+	var tile_data := _get_tile_data_at_pos(coords)
 
 	if tile_data.has_crop():
 		return
@@ -33,11 +33,12 @@ func till_tile(player_pos: Vector2):
 		return
 
 	tile_data.is_tilled = true
-	_update_tile_map(_coords, TILLED_GRASS_INDEX)
+	_update_tile_map(coords, TILLED_GRASS_INDEX)
 
 # Water this tile only if it's already tilled and not watered
 func water_tile(player_pos: Vector2):
-	var tile_data := _get_tile_data_at_pos(player_pos)
+	var coords := _get_coords_from_pos(player_pos)
+	var tile_data := _get_tile_data_at_pos(coords)
 
 	if not tile_data.is_tilled:
 		return
@@ -49,12 +50,13 @@ func water_tile(player_pos: Vector2):
 	if tile_data.has_crop():
 		tile_data.crop_node.water()
 
-	_watered_tiles[_coords] = tile_data
-	_update_tile_map(_coords, TILLED_WATERED_INDEX)
+	_watered_tiles[coords] = tile_data
+	_update_tile_map(coords, TILLED_WATERED_INDEX)
 
 # Harvest the crop on this tile if one is present
 func harvest_tile(player_pos: Vector2):
-	var tile_data := _get_tile_data_at_pos(player_pos)
+	var coords := _get_coords_from_pos(player_pos)
+	var tile_data := _get_tile_data_at_pos(coords)
 
 	if not tile_data.has_crop():
 		return
@@ -66,11 +68,12 @@ func harvest_tile(player_pos: Vector2):
 
 	tile_data.crop_node.clear()
 	tile_data.crop_node = null
-	_watered_tiles.erase(_coords)
+	_watered_tiles.erase(coords)
 
 # Plant a crop on this tile if the soil has been tilled
 func plant_tile(crop_resource : CropResource, player_pos: Vector2):
-	var tile_data := _get_tile_data_at_pos(player_pos)
+	var coords := _get_coords_from_pos(player_pos)
+	var tile_data := _get_tile_data_at_pos(coords)
 
 	if not tile_data.is_tilled:
 		return
@@ -82,7 +85,7 @@ func plant_tile(crop_resource : CropResource, player_pos: Vector2):
 	# Convert tile coordinates back to world position to ensure
 	# the crop is perfectly centered on the tile. this is more precise
 	# and consistent than using player_pos directly.
-	crop.global_position = _tile_map.map_to_local(_coords)
+	crop.global_position = _tile_map.map_to_local(coords)
 	crop.initialize(CropData.new(crop_resource), tile_data.is_watered)
 
 	tile_data.crop_node = crop
@@ -102,9 +105,11 @@ func on_day_changed() -> void:
 
 	_watered_tiles.clear()
 
-func _get_tile_data_at_pos(player_pos: Vector2) -> GrassTileData:
-	_coords = _tile_map.local_to_map(player_pos)
-	return _tile_data_at_pos[_coords]
+func _get_coords_from_pos(player_pos: Vector2) -> Vector2i:
+	return _tile_map.local_to_map(player_pos)
+
+func _get_tile_data_at_pos(coords: Vector2i) -> GrassTileData:
+	return _tile_data_at_pos[coords]
 
 func _update_tile_map(coords: Vector2i, index : int):
 	_tile_map.set_cell(coords, index, Vector2i(0, 0))

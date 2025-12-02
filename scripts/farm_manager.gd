@@ -20,6 +20,8 @@ func _init() -> void:
 func _ready() -> void:
 	GameManager.day_changed.connect(_on_day_changed)
 	GameManager.item_used.connect(_on_item_used)
+	GameManager.player_moved.connect(_on_player_moved)
+	GameManager.player_stopped.connect(_on_player_stopped)
 
 	var potato_seed = ItemData.Seed.new(_potato_resource)
 	var turnip_seed = ItemData.Seed.new(_turnip_resource)
@@ -86,3 +88,9 @@ func _on_item_used() -> void:
 				_grassland.plant_tile(item.seed_data.crop_resource, player_pos)
 			elif can_buy_seed(item.seed_data.crop_resource):
 				buy_seed(item.seed_data.crop_resource)
+
+func _on_player_moved(input_direction: Vector2) -> void:
+	_player.update_input_direction(input_direction)
+
+func _on_player_stopped() -> void:
+	_player.stop_moving()

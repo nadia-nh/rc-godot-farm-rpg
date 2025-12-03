@@ -18,6 +18,8 @@ func _ready() -> void:
 	GameManager.money_updated.connect(_on_money_updated)
 	GameManager.seed_quantity_updated.connect(_on_seed_quantity_updated)
 
+	next_day_button.pressed.connect(_on_next_day_pressed)
+
 	for child in buttons_container.get_children():
 		if child is ItemButton:
 			item_buttons.append(child)
@@ -47,6 +49,10 @@ func _on_seed_quantity_updated(
 # Inform game manager that the item was selected
 func _on_item_pressed(button: ItemButton) -> void:
 	GameManager.item_selected.emit(button.get_item())
+
+# Inform game manager that the day has changed
+func _on_next_day_pressed() -> void:
+	GameManager.day_changed.emit()
 
 func _button_has_item(button: ItemButton, item: ItemData.Item) -> bool:
 	return button.get_item().is_equal_to(item)

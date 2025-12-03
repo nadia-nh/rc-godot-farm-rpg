@@ -2,48 +2,53 @@ class_name CropNode
 extends Node2D
 ## CropNode
 ##
-## Handles crop growth, using CropData to track state, and updates the sprite
-## when needed.
+## Handles crop growth and state, updates the sprite when needed.
 
-var _crop_data : CropData
+var _crop_resource : CropResource
 var _current_index : int
+var _days_to_grow : int
+var _is_watered : bool
 
 @onready var sprite = $CropSprite
 
 func _ready() -> void:
 	pass
 
-func initialize(crop_data : CropData, is_tile_watered : bool):
-	_crop_data = crop_data
-	_crop_data.set_watered(is_tile_watered)
+func initialize(crop_resource: CropResource, is_tile_watered : bool):
+	_crop_resource = crop_resource
+	_days_to_grow = _crop_resource.crop_assets.size() - 1
+	_is_watered = is_tile_watered
 	_current_index = 0
-	sprite.texture = _crop_data.get_asset_at_index(_current_index)
+	sprite.texture = _get_asset_at_index(_current_index)
 
 func can_be_harvested() -> bool:
-	return _current_index >= _crop_data.get_days_to_grow()
+	return _current_index >= _days_to_grow
 
 func water() -> void:
-	_crop_data.set_watered(true)
+	_is_watered = true
 
 func on_new_day() -> void:
-	if not _crop_data.is_watered():
+	if not _is_watered:
 		return
 
-	_crop_data.set_watered(false)
+	_is_watered = false
 	_update_sprite_texture()
 
 func clear() -> void:
 	sprite.texture = null
 
 func get_crop_resource() -> CropResource:
-	if not is_instance_valid(_crop_data):
-		return null
-
-	return _crop_data._crop_resource
+	return _crop_resource
 
 func _update_sprite_texture() -> void:
 	if can_be_harvested():
 		return
 
 	_current_index += 1
-	sprite.texture = _crop_data.get_asset_at_index(_current_index)
+	sprite.texture = _get_asset_at_index(_current_index)
+
+func _get_asset_at_index(index : int) -> Texture:
+	if index > _days_to_grow:
+		return null
+
+	return _crop_resource.crop_assets[index]

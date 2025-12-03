@@ -86,7 +86,7 @@ func plant_tile(crop_resource : CropResource, player_pos: Vector2) -> bool:
 	# the crop is perfectly centered on the tile. this is more precise
 	# and consistent than using player_pos directly.
 	crop.global_position = _tile_map.map_to_local(coords)
-	crop.initialize(CropData.new(crop_resource), tile_data.is_watered)
+	crop.initialize(crop_resource, tile_data.is_watered)
 
 	tile_data.crop_node = crop
 	return true

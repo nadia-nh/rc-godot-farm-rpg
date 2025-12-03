@@ -43,7 +43,7 @@ func get_item_from_action(action: String) -> ItemData.Item:
 
 	return _items_by_action[action]
 
-func can_plant_crop(crop: CropResource) -> bool:
+func can_use_crop_seed(crop: CropResource) -> bool:
 	if not crop in _seed_quantities.keys():
 		return false
 
@@ -87,12 +87,15 @@ func _on_item_used() -> void:
 		ItemData.Tool.HOE:
 			_grassland.till_tile(player_pos)
 		ItemData.Tool.SCYTHE:
-			_grassland.harvest_tile(player_pos)
+			var crop = _grassland.get_crop_resource_at_pos(player_pos)
+			if _grassland.harvest_tile(player_pos):
+				sell_crop(crop)
 		ItemData.Tool.WATER_BUCKET:
 			_grassland.water_tile(player_pos)
 		ItemData.Tool.NONE:
-			if can_plant_crop(item.get_crop_resource()):
-				_grassland.plant_tile(item.get_crop_resource(), player_pos)
+			if can_use_crop_seed(item.get_crop_resource()):
+				if _grassland.plant_tile(item.get_crop_resource(), player_pos):
+					use_seed(item.get_crop_resource())
 			elif can_buy_seed(item.get_crop_resource()):
 				buy_seed(item.get_crop_resource())
 

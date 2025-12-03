@@ -15,7 +15,6 @@ var _tile_data_at_pos: Dictionary[Vector2i, GrassTileData]
 var _watered_tiles : Dictionary[Vector2i, GrassTileData]
 
 @onready var _tile_map: TileMapLayer = $GrassTileMap
-@onready var _farm_manager: FarmManager = $".."
 
 func _ready():
 	for cell in _tile_map.get_used_cells():
@@ -68,8 +67,6 @@ func harvest_tile(player_pos: Vector2) -> bool:
 	if not tile_data.crop_node.can_be_harvested():
 		return false
 
-	_farm_manager.sell_crop(tile_data.crop_node.get_crop_resource())
-
 	tile_data.crop_node.clear()
 	tile_data.crop_node = null
 	_watered_tiles.erase(coords)
@@ -82,8 +79,6 @@ func plant_tile(crop_resource : CropResource, player_pos: Vector2) -> bool:
 
 	if not tile_data.is_tilled:
 		return false
-
-	_farm_manager.use_seed(crop_resource)
 
 	var crop: CropNode = _crop_scene.instantiate()
 	add_child(crop)
@@ -110,6 +105,12 @@ func on_day_changed() -> void:
 			tile_data.crop_node.on_new_day()
 
 	_watered_tiles.clear()
+
+func get_crop_resource_at_pos(player_pos: Vector2) -> CropResource:
+	var coords := _get_coords_from_pos(player_pos)
+	var tile_data := _get_tile_data_at_pos(coords)
+	var crop_node := tile_data.crop_node
+	return crop_node.get_crop_resource() if is_instance_valid(crop_node) else null
 
 func _get_coords_from_pos(player_pos: Vector2) -> Vector2i:
 	return _tile_map.local_to_map(player_pos)

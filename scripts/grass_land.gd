@@ -11,28 +11,28 @@ const TILLED_GRASS_INDEX = 1
 const TILLED_WATERED_INDEX = 2
 
 var _crop_scene: PackedScene = preload("res://Scenes/crop_node.tscn")
-var _tile_data_at_pos: Dictionary[Vector2i, GrassTileData]
-var _watered_tiles : Dictionary[Vector2i, GrassTileData]
+var _tile_state_at_pos: Dictionary[Vector2i, GrassTileState]
+var _watered_tiles : Dictionary[Vector2i, GrassTileState]
 
 @onready var _tile_map: TileMapLayer = $GrassTileMap
 
 func _ready():
 	for cell in _tile_map.get_used_cells():
-		_tile_data_at_pos[cell] = GrassTileData.new()
+		_tile_state_at_pos[cell] = GrassTileState.new()
 
 # Returns true if the tile was tilled
 # This happens when the tile doesn't have a crop and is not already tilled
 func till_tile(player_pos: Vector2) -> bool:
 	var coords := _get_coords_from_pos(player_pos)
-	var tile_data := _get_tile_data_at_coords(coords)
+	var tile_state := _get_tile_data_at_coords(coords)
 
-	if tile_data.has_crop():
+	if tile_state.has_crop():
 		return false
 
-	if tile_data.is_tilled:
+	if tile_state.is_tilled:
 		return false
 
-	tile_data.is_tilled = true
+	tile_state.is_tilled = true
 	_update_tile_map(coords, TILLED_GRASS_INDEX)
 	return true
 
@@ -40,44 +40,45 @@ func till_tile(player_pos: Vector2) -> bool:
 # This happens when the tile is already tilled and not watered
 func water_tile(player_pos: Vector2) -> bool:
 	var coords := _get_coords_from_pos(player_pos)
-	var tile_data := _get_tile_data_at_coords(coords)
+	var tile_state := _get_tile_data_at_coords(coords)
 
-	if not tile_data.is_tilled:
+	if not tile_state.is_tilled:
 		return false
 
-	if tile_data.is_watered:
+	if tile_state.is_watered:
 		return false
 
-	tile_data.is_watered = true
-	if tile_data.has_crop():
-		tile_data.crop_node.water()
+	if tile_state.has_crop():
+		tile_state.crop_node.water()
 
-	_watered_tiles[coords] = tile_data
+	tile_state.is_watered = true
+
+	_watered_tiles[coords] = tile_state
 	_update_tile_map(coords, TILLED_WATERED_INDEX)
 	return true
 
 # Harvest the crop on this tile if one is present
 func harvest_tile(player_pos: Vector2) -> bool:
 	var coords := _get_coords_from_pos(player_pos)
-	var tile_data := _get_tile_data_at_coords(coords)
+	var tile_state := _get_tile_data_at_coords(coords)
 
-	if not tile_data.has_crop():
+	if not tile_state.has_crop():
 		return false
 
-	if not tile_data.crop_node.can_be_harvested():
+	if not tile_state.crop_node.can_be_harvested():
 		return false
 
-	tile_data.crop_node.clear()
-	tile_data.crop_node = null
+	tile_state.crop_node.clear()
+	tile_state.crop_node = null
 	_watered_tiles.erase(coords)
 	return true
 
 # Plant a crop on this tile if the soil has been tilled
 func plant_tile(crop_resource : CropResource, player_pos: Vector2) -> bool:
 	var coords := _get_coords_from_pos(player_pos)
-	var tile_data := _get_tile_data_at_coords(coords)
+	var tile_state := _get_tile_data_at_coords(coords)
 
-	if not tile_data.is_tilled:
+	if not tile_state.is_tilled:
 		return false
 
 	var crop: CropNode = _crop_scene.instantiate()
@@ -86,37 +87,37 @@ func plant_tile(crop_resource : CropResource, player_pos: Vector2) -> bool:
 	# the crop is perfectly centered on the tile. this is more precise
 	# and consistent than using player_pos directly.
 	crop.global_position = _tile_map.map_to_local(coords)
-	crop.initialize(crop_resource, tile_data.is_watered)
+	crop.initialize(crop_resource, tile_state.is_watered)
 
-	tile_data.crop_node = crop
+	tile_state.crop_node = crop
 	return true
 
 # Mark watered tile as unwatered, update the tile visuals,
 # 	and adjust crop sprites when required.
 func on_day_changed() -> void:
 	for cell in _watered_tiles:
-		var tile_data := _watered_tiles[cell]
-		tile_data.is_watered = false
+		var tile_state := _watered_tiles[cell]
+		tile_state.is_watered = false
 		
-		var index = TILLED_GRASS_INDEX if tile_data.is_tilled else GRASS_INDEX
+		var index = TILLED_GRASS_INDEX if tile_state.is_tilled else GRASS_INDEX
 		_update_tile_map(cell, index)
 
-		if tile_data.has_crop():
-			tile_data.crop_node.on_new_day()
+		if tile_state.has_crop():
+			tile_state.crop_node.on_new_day()
 
 	_watered_tiles.clear()
 
 func get_crop_resource_at_pos(player_pos: Vector2) -> CropResource:
 	var coords := _get_coords_from_pos(player_pos)
-	var crop_node := tile_data.crop_node
-	var tile_data := _get_tile_data_at_coords(coords)
+	var tile_state := _get_tile_data_at_coords(coords)
+	var crop_node := tile_state.crop_node
 	return crop_node.get_crop_resource() if is_instance_valid(crop_node) else null
 
 func _get_coords_from_pos(player_pos: Vector2) -> Vector2i:
 	return _tile_map.local_to_map(player_pos)
 
-func _get_tile_data_at_coords(coords: Vector2i) -> GrassTileData:
-	return _tile_data_at_pos[coords]
+func _get_tile_data_at_coords(coords: Vector2i) -> GrassTileState:
+	return _tile_state_at_pos[coords]
 
 func _update_tile_map(coords: Vector2i, index : int):
 	_tile_map.set_cell(coords, index, Vector2i(0, 0))

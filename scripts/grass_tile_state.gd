@@ -1,5 +1,5 @@
-class_name GrassTileData
-## GrassTileData
+class_name GrassTileState
+## GrassTileState
 ##
 ## Stores the state of a tile, whether it's tilled or watered, and holds a
 ## reference to its CropNode if present.

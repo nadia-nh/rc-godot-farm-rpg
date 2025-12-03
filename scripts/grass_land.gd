@@ -21,30 +21,33 @@ func _ready():
 	for cell in _tile_map.get_used_cells():
 		_tile_data_at_pos[cell] = GrassTileData.new()
 
-# Till this tile if it doesn't have a crop and is not already tilled
-func till_tile(player_pos: Vector2):
+# Returns true if the tile was tilled
+# This happens when the tile doesn't have a crop and is not already tilled
+func till_tile(player_pos: Vector2) -> bool:
 	var coords := _get_coords_from_pos(player_pos)
 	var tile_data := _get_tile_data_at_pos(coords)
 
 	if tile_data.has_crop():
-		return
+		return false
 
 	if tile_data.is_tilled:
-		return
+		return false
 
 	tile_data.is_tilled = true
 	_update_tile_map(coords, TILLED_GRASS_INDEX)
+	return true
 
-# Water this tile only if it's already tilled and not watered
-func water_tile(player_pos: Vector2):
+# Returns true if the tile was watered
+# This happens when the tile is already tilled and not watered
+func water_tile(player_pos: Vector2) -> bool:
 	var coords := _get_coords_from_pos(player_pos)
 	var tile_data := _get_tile_data_at_pos(coords)
 
 	if not tile_data.is_tilled:
-		return
+		return false
 
 	if tile_data.is_watered:
-		return
+		return false
 
 	tile_data.is_watered = true
 	if tile_data.has_crop():
@@ -52,31 +55,33 @@ func water_tile(player_pos: Vector2):
 
 	_watered_tiles[coords] = tile_data
 	_update_tile_map(coords, TILLED_WATERED_INDEX)
+	return true
 
 # Harvest the crop on this tile if one is present
-func harvest_tile(player_pos: Vector2):
+func harvest_tile(player_pos: Vector2) -> bool:
 	var coords := _get_coords_from_pos(player_pos)
 	var tile_data := _get_tile_data_at_pos(coords)
 
 	if not tile_data.has_crop():
-		return
+		return false
 
 	if not tile_data.crop_node.can_be_harvested():
-		return
+		return false
 
 	_farm_manager.sell_crop(tile_data.crop_node.get_crop_resource())
 
 	tile_data.crop_node.clear()
 	tile_data.crop_node = null
 	_watered_tiles.erase(coords)
+	return true
 
 # Plant a crop on this tile if the soil has been tilled
-func plant_tile(crop_resource : CropResource, player_pos: Vector2):
+func plant_tile(crop_resource : CropResource, player_pos: Vector2) -> bool:
 	var coords := _get_coords_from_pos(player_pos)
 	var tile_data := _get_tile_data_at_pos(coords)
 
 	if not tile_data.is_tilled:
-		return
+		return false
 
 	_farm_manager.use_seed(crop_resource)
 
@@ -89,6 +94,7 @@ func plant_tile(crop_resource : CropResource, player_pos: Vector2):
 	crop.initialize(CropData.new(crop_resource), tile_data.is_watered)
 
 	tile_data.crop_node = crop
+	return true
 
 # Mark watered tile as unwatered, update the tile visuals,
 # 	and adjust crop sprites when required.

@@ -5,13 +5,20 @@ extends Node
 ## and selected item. Declares signals for global use and emits the ones
 ## tied to day, money, and item selected changes.
 
+# Day Signals
 signal day_changed()
+
+# Money and Seed Quantity Signals
 signal money_updated(quantity: int)
+@warning_ignore("unused_signal")
+signal seed_quantity_updated(crop_resource_for_seed: CropResource, quantity: int)
+
+# Item Signals
 @warning_ignore("unused_signal")
 signal item_used()
 signal item_selected(item: ItemData.Item)
-@warning_ignore("unused_signal")
-signal seed_quantity_updated(crop_resource_for_seed: CropResource, quantity: int)
+
+# Player Movement Signals
 @warning_ignore("unused_signal")
 signal player_moved(input_direction: Vector2)
 @warning_ignore("unused_signal")

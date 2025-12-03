@@ -30,7 +30,7 @@ func _physics_process(_delta):
 				farm_manager.get_item_from_action(action))
 
 	for action in player_actions:
-		if Input.is_action_just_pressed(action):
+		if Input.is_action_pressed(action):
 			# Gets the inputs and converts them to a direction
 			var input_direction = Input.get_vector(
 				"move_left", "move_right", "move_up", "move_down")

@@ -84,10 +84,10 @@ func _on_item_used() -> void:
 		ItemData.Tool.WATER_BUCKET:
 			_grassland.water_tile(player_pos)
 		ItemData.Tool.NONE:
-			if can_plant_crop(item.seed_data.crop_resource):
-				_grassland.plant_tile(item.seed_data.crop_resource, player_pos)
-			elif can_buy_seed(item.seed_data.crop_resource):
-				buy_seed(item.seed_data.crop_resource)
+			if can_plant_crop(item.get_crop_resource()):
+				_grassland.plant_tile(item.get_crop_resource(), player_pos)
+			elif can_buy_seed(item.get_crop_resource()):
+				buy_seed(item.get_crop_resource())
 
 func _on_player_moved(input_direction: Vector2) -> void:
 	_player.update_input_direction(input_direction)

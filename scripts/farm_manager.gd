@@ -81,21 +81,28 @@ func _on_day_changed() -> void:
 	_grassland.on_day_changed()
 
 func _on_item_used() -> void:
+	if not GameManager.can_consume_action():
+		return
+
 	var item = GameManager.get_current_item()
 	var player_pos = _player.get_position()
 	match item.tool_data:
 		ItemData.Tool.HOE:
-			_grassland.till_tile(player_pos)
+			if _grassland.till_tile(player_pos):
+				GameManager.consume_daily_action()
 		ItemData.Tool.SCYTHE:
 			var crop = _grassland.get_crop_resource_at_pos(player_pos)
 			if _grassland.harvest_tile(player_pos):
 				sell_crop(crop)
+				GameManager.consume_daily_action()
 		ItemData.Tool.WATER_BUCKET:
-			_grassland.water_tile(player_pos)
+			if _grassland.water_tile(player_pos):
+				GameManager.consume_daily_action()
 		ItemData.Tool.NONE:
 			if can_use_crop_seed(item.get_crop_resource()):
 				if _grassland.plant_tile(item.get_crop_resource(), player_pos):
 					use_seed(item.get_crop_resource())
+					GameManager.consume_daily_action()
 			elif can_buy_seed(item.get_crop_resource()):
 				buy_seed(item.get_crop_resource())
 

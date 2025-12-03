@@ -57,12 +57,19 @@ func use_seed(crop: CropResource) -> void:
 	GameManager.seed_quantity_updated.emit(crop, _seed_quantities[crop])
 
 func sell_crop(crop: CropResource) -> void:
-	GameManager.add_money(crop.sell_price)
+	if is_instance_valid(crop):
+		GameManager.add_money(crop.sell_price)
 
 func can_buy_seed(crop: CropResource) -> bool:
+	if not is_instance_valid(crop):
+		return false
+
 	return GameManager.can_spend_money(crop.seed_price)
 
 func buy_seed(crop: CropResource) -> void:
+	if not is_instance_valid(crop):
+		return
+
 	GameManager.spend_money(crop.seed_price)
 	_seed_quantities[crop] += 1
 	GameManager.seed_quantity_updated.emit(crop, _seed_quantities[crop])

@@ -82,7 +82,7 @@ func _on_day_changed() -> void:
 
 func _on_item_used() -> void:
 	var item = GameManager.get_current_item()
-	var player_pos = _player.global_position
+	var player_pos = _player.get_position()
 	match item.tool_data:
 		ItemData.Tool.HOE:
 			_grassland.till_tile(player_pos)

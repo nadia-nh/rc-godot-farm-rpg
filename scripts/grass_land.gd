@@ -24,7 +24,7 @@ func _ready():
 # This happens when the tile doesn't have a crop and is not already tilled
 func till_tile(player_pos: Vector2) -> bool:
 	var coords := _get_coords_from_pos(player_pos)
-	var tile_data := _get_tile_data_at_pos(coords)
+	var tile_data := _get_tile_data_at_coords(coords)
 
 	if tile_data.has_crop():
 		return false
@@ -40,7 +40,7 @@ func till_tile(player_pos: Vector2) -> bool:
 # This happens when the tile is already tilled and not watered
 func water_tile(player_pos: Vector2) -> bool:
 	var coords := _get_coords_from_pos(player_pos)
-	var tile_data := _get_tile_data_at_pos(coords)
+	var tile_data := _get_tile_data_at_coords(coords)
 
 	if not tile_data.is_tilled:
 		return false
@@ -59,7 +59,7 @@ func water_tile(player_pos: Vector2) -> bool:
 # Harvest the crop on this tile if one is present
 func harvest_tile(player_pos: Vector2) -> bool:
 	var coords := _get_coords_from_pos(player_pos)
-	var tile_data := _get_tile_data_at_pos(coords)
+	var tile_data := _get_tile_data_at_coords(coords)
 
 	if not tile_data.has_crop():
 		return false
@@ -75,7 +75,7 @@ func harvest_tile(player_pos: Vector2) -> bool:
 # Plant a crop on this tile if the soil has been tilled
 func plant_tile(crop_resource : CropResource, player_pos: Vector2) -> bool:
 	var coords := _get_coords_from_pos(player_pos)
-	var tile_data := _get_tile_data_at_pos(coords)
+	var tile_data := _get_tile_data_at_coords(coords)
 
 	if not tile_data.is_tilled:
 		return false
@@ -108,14 +108,14 @@ func on_day_changed() -> void:
 
 func get_crop_resource_at_pos(player_pos: Vector2) -> CropResource:
 	var coords := _get_coords_from_pos(player_pos)
-	var tile_data := _get_tile_data_at_pos(coords)
 	var crop_node := tile_data.crop_node
+	var tile_data := _get_tile_data_at_coords(coords)
 	return crop_node.get_crop_resource() if is_instance_valid(crop_node) else null
 
 func _get_coords_from_pos(player_pos: Vector2) -> Vector2i:
 	return _tile_map.local_to_map(player_pos)
 
-func _get_tile_data_at_pos(coords: Vector2i) -> GrassTileData:
+func _get_tile_data_at_coords(coords: Vector2i) -> GrassTileData:
 	return _tile_data_at_pos[coords]
 
 func _update_tile_map(coords: Vector2i, index : int):

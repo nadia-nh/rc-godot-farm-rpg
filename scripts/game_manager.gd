@@ -7,6 +7,7 @@ extends Node
 
 # Day Signals
 signal day_changed()
+signal day_advanced(progress: float)
 
 # Money and Seed Quantity Signals
 signal money_updated(quantity: int)
@@ -24,7 +25,7 @@ signal player_moved(input_direction: Vector2)
 @warning_ignore("unused_signal")
 signal player_stopped()
 
-const MAX_DAILY_ACTIONS: int = 5
+const MAX_DAILY_ACTIONS: float = 5.0
 
 var _current_day : int
 var _current_money : int
@@ -69,6 +70,8 @@ func consume_daily_action():
 		return
 	
 	_daily_actions_left -= 1
+	var percentage = (MAX_DAILY_ACTIONS - _daily_actions_left) / MAX_DAILY_ACTIONS
+	day_advanced.emit(percentage)
 
 func _on_item_selected(item : ItemData.Item) -> void:
 	_current_item = item
@@ -79,7 +82,8 @@ func _set_item(item : ItemData.Item) -> void:
 # Increases the day, and resets daily actions
 func _on_day_changed() -> void:
 	_current_day += 1
-	_daily_actions_left = MAX_DAILY_ACTIONS
+	_daily_actions_left = int(MAX_DAILY_ACTIONS)
+	day_advanced.emit(0.0)
 
 # Emits the day_changed signal
 func _set_next_day() -> void:

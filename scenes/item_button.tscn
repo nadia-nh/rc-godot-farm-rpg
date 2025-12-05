@@ -9,7 +9,6 @@ line_spacing = 0.0
 font_size = 10
 font_color = Color(0, 0.5882353, 0.26666668, 1)
 outline_size = 1
-outline_color = Color(0, 0.14509805, 0.043137256, 1)
 
 [node name="ItemButton" type="TextureButton"]
 offset_left = -13.0

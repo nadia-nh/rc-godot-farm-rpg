@@ -32,10 +32,7 @@ func _ready() -> void:
 		"seed_potato": _build_item(ItemData.Tool.NONE, potato_seed),
 		"seed_turnip": _build_item(ItemData.Tool.NONE, turnip_seed)
 	}
-	_seed_quantities = {
-		_potato_resource : 2,
-		_turnip_resource : 2
-	}
+	_init_seed_quantities()
 
 func get_item_from_action(action: String) -> ItemData.Item:
 	if not action in _items_by_action.keys():
@@ -73,6 +70,16 @@ func buy_seed(crop: CropResource) -> void:
 	GameManager.spend_money(crop.seed_price)
 	_seed_quantities[crop] += 1
 	GameManager.seed_quantity_updated.emit(crop, _seed_quantities[crop])
+
+func _init_seed_quantities() -> void:
+	_seed_quantities = {
+		_potato_resource : 2,
+		_turnip_resource : 2
+	}
+
+	for crop_resource_for_seed in _seed_quantities:
+		GameManager.seed_quantity_updated.emit(
+			crop_resource_for_seed, _seed_quantities[crop_resource_for_seed])
 
 func _build_item(item_tool, item_seed):
 	return ItemData.Item.new(item_tool, item_seed)

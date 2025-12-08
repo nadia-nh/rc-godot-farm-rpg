@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dhfuvrs7venw4"]
+
+[ext_resource type="Texture2D" uid="uid://cj3oilea335i7" path="res://assets/tile.png" id="1_be7i2"]
+[ext_resource type="Texture2D" uid="uid://dgfmnerlb517g" path="res://assets/play-icon.png" id="2_bn4cq"]
+
+[node name="TextureButton" type="TextureButton"]
+custom_minimum_size = Vector2(88, 88)
+offset_right = 40.0
+offset_bottom = 40.0
+texture_normal = ExtResource("1_be7i2")
+stretch_mode = 0
+
+[node name="Icon" type="Sprite2D" parent="."]
+position = Vector2(45, 45)
+scale = Vector2(3, 3)
+texture = ExtResource("2_bn4cq")

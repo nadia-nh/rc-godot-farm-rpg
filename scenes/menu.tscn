@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://dexpubtxc63iw"]
+[gd_scene load_steps=6 format=3 uid="uid://dexpubtxc63iw"]
 
 [ext_resource type="Texture2D" uid="uid://da5ftpitfunuk" path="res://assets/background.png" id="1_vjb58"]
+[ext_resource type="PackedScene" uid="uid://dhfuvrs7venw4" path="res://scenes/text_button.tscn" id="2_vjb58"]
+[ext_resource type="Texture2D" uid="uid://ctieoa528wtj" path="res://assets/exit-icon.png" id="4_4ytvr"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_con2f"]
 texture = ExtResource("1_vjb58")
@@ -23,3 +25,41 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_con2f")
 
+[node name="ContinueButton" parent="." instance=ExtResource("2_vjb58")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.0
+offset_top = -44.0
+offset_right = 44.0
+offset_bottom = 44.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = null
+
+[node name="Icon" parent="ContinueButton" index="0"]
+position = Vector2(44, 40)
+scale = Vector2(5, 5)
+
+[node name="ExitButton" parent="." instance=ExtResource("2_vjb58")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -108.0
+offset_top = -108.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Icon" parent="ExitButton" index="0"]
+texture = ExtResource("4_4ytvr")
+
+[editable path="ContinueButton"]
+[editable path="ExitButton"]

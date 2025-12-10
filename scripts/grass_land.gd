@@ -75,12 +75,15 @@ func harvest_tile(player_pos: Vector2) -> bool:
 	_watered_tiles.erase(coords)
 	return true
 
-# Plant a crop on this tile if the soil has been tilled
+# Plant a crop on this tile if the soil has been tilled and there's no crop
 func plant_tile(crop_resource : CropResource, player_pos: Vector2) -> bool:
 	var coords := _get_coords_from_pos(player_pos)
 	var tile_state := _get_tile_data_at_coords(coords)
 
 	if not tile_state.is_tilled:
+		return false
+
+	if tile_state.has_crop():
 		return false
 
 	var crop: CropNode = _crop_scene.instantiate()

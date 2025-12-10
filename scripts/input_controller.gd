@@ -23,6 +23,8 @@ func _physics_process(_delta):
 		GameManager.day_changed.emit()
 	if Input.is_action_just_pressed("use_item"):
 		GameManager.item_used.emit()
+	if Input.is_action_just_pressed("esc_key"):
+		get_tree().change_scene_to_file("res://scenes/menu.tscn")
 
 	for action in item_actions:
 		if Input.is_action_just_pressed(action):

@@ -11,6 +11,8 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("quit_game"):
 		_quit_game()
+	if Input.is_action_just_pressed("continue_game"):
+		_continue_game()
 
 func _on_continue_button_pressed() -> void:
 	# TODO: Make transition faster
@@ -22,3 +24,7 @@ func _on_exit_button_pressed() -> void:
 func _quit_game() -> void:
 	# TODO: Add confirmation screen
 	get_tree().quit()
+
+func _continue_game() -> void:
+	# TODO: Make transition faster
+	get_tree().change_scene_to_packed(_main_scene)

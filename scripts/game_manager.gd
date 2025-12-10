@@ -31,8 +31,25 @@ var _current_day : int
 var _current_money : int
 var _current_item : ItemData.Item
 var _daily_actions_left: int = 0
+var _initialized : bool = false
 
+# Initialize data if this is already the Main scene,
+# otherwise, wait until the scene changes to Main
 func _ready() -> void:
+	get_tree().scene_changed.connect(_on_change_scene)
+
+	if get_tree().current_scene.name == "Main" and not _initialized:
+		_initialize()
+
+# Only initialize data when we change to the Main scene
+func _on_change_scene() -> void:
+	if get_tree().current_scene.name != "Main":
+		return
+
+	if not _initialized:
+		_initialize()
+
+func _initialize() -> void:
 	item_selected.connect(_on_item_selected)
 	day_changed.connect(_on_day_changed)
 
@@ -41,6 +58,7 @@ func _ready() -> void:
 	_current_day = 0
 	_set_next_day.call_deferred()
 	_set_item.call_deferred(ItemData.Item.new(ItemData.Tool.HOE, null))
+	_initialized = true
 
 func get_current_day() -> int:
 	return _current_day

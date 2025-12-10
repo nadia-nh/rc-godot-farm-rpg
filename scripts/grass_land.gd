@@ -20,8 +20,8 @@ func _ready():
 	for cell in _tile_map.get_used_cells():
 		_tile_state_at_pos[cell] = GrassTileState.new()
 
-# Returns true if the tile was tilled
-# This happens when the tile doesn't have a crop and is not already tilled
+# Returns true if the tile was tilled / untilled
+# This happens when the tile doesn't have a crop
 func till_tile(player_pos: Vector2) -> bool:
 	var coords := _get_coords_from_pos(player_pos)
 	var tile_state := _get_tile_data_at_coords(coords)
@@ -30,7 +30,9 @@ func till_tile(player_pos: Vector2) -> bool:
 		return false
 
 	if tile_state.is_tilled:
-		return false
+		tile_state.is_tilled = false
+		_update_tile_map(coords, GRASS_INDEX)
+		return true
 
 	tile_state.is_tilled = true
 	_update_tile_map(coords, TILLED_GRASS_INDEX)

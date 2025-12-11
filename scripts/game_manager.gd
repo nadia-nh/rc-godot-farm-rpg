@@ -27,6 +27,7 @@ signal player_stopped()
 
 const MAX_DAILY_ACTIONS: float = 5.0
 
+var _painting_mode : bool = false
 var _current_day : int
 var _current_money : int
 var _current_item : ItemData.Item
@@ -80,7 +81,7 @@ func spend_money(amount: int) -> void:
 
 # Checks whether the player can consume one of the daily actions
 func can_consume_action():
-	return _daily_actions_left > 0
+	return _painting_mode or _daily_actions_left > 0
 
 # Uses up one of the daily actions and updates the UI
 func consume_daily_action():
@@ -90,6 +91,9 @@ func consume_daily_action():
 	_daily_actions_left -= 1
 	var percentage = (MAX_DAILY_ACTIONS - _daily_actions_left) / MAX_DAILY_ACTIONS
 	day_advanced.emit(percentage)
+
+func in_panting_mode() -> bool:
+	return _painting_mode
 
 func _on_item_selected(item : ItemData.Item) -> void:
 	_current_item = item

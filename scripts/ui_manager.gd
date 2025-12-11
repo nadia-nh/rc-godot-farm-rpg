@@ -12,18 +12,30 @@ var item_buttons : Array[ItemButton]
 @onready var next_day_button = $NextDayButton
 @onready var money_display = $MoneyDisplay
 
-func _ready() -> void:
+func _ready() -> void:	
+	if GameManager.in_panting_mode():
+		_hide_ui_elements()
+	else:
+		_connect_to_signals()
+		_initialize_buttons()
+
+func _connect_to_signals() -> void:
 	GameManager.item_selected.connect(_on_item_selected)
 	GameManager.day_changed.connect(_on_day_changed)
 	GameManager.money_updated.connect(_on_money_updated)
 	GameManager.seed_quantity_updated.connect(_on_seed_quantity_updated)
-
 	next_day_button.pressed.connect(_on_next_day_pressed)
 
+func _initialize_buttons() -> void:
 	for child in buttons_container.get_children():
 		if child is ItemButton:
 			item_buttons.append(child)
 			child.pressed.connect(_on_item_pressed.bind(child))
+
+func _hide_ui_elements() -> void:
+	buttons_container.visible = false
+	next_day_button.visible = false
+	money_display.visible = false
 
 func _on_item_selected(item: ItemData.Item) -> void:
 	for button in item_buttons:

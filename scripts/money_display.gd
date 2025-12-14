@@ -6,7 +6,12 @@ extends TextureRect
 
 const MAX_QUANTITY: int = 10_000_000
 
+var _is_hovered = false
 @onready var money_text = $MoneyText
+
+func _ready() -> void:
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
 
 # Shows the player's money (capped at 10 million) and formats it so
 # the text fits within the width of the asset.
@@ -28,3 +33,12 @@ func update_money(quantity: int) -> void:
 		text += str(quantity)
 
 	money_text.text = text
+
+func is_hovered() -> bool:
+	return _is_hovered
+
+func _on_mouse_entered() -> void:
+	_is_hovered = true
+
+func _on_mouse_exited() -> void:
+	_is_hovered = false

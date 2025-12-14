@@ -9,6 +9,7 @@ var item_actions : Array[String]
 var player_actions : Array[String]
 
 @onready var farm_manager = $"../FarmManager"
+@onready var ui_manager = $"../UIManager"
 
 func _ready() -> void:
 	item_actions = [
@@ -18,11 +19,18 @@ func _ready() -> void:
 		"move_left", "move_right", "move_up", "move_down"
 	]
 
+func _item_use_valid() -> bool:
+	return not ui_manager.any_element_hovered()
+
 func _physics_process(_delta):
-	if Input.is_action_just_pressed("next_day"):
-		GameManager.day_changed.emit()
 	if Input.is_action_just_pressed("use_item"):
 		GameManager.item_used.emit()
+
+	if Input.is_action_just_pressed("use_item-click") and _item_use_valid():
+		GameManager.item_used.emit()
+
+	if Input.is_action_just_pressed("next_day"):
+		GameManager.day_changed.emit()
 	if Input.is_action_just_pressed("esc_key"):
 		get_tree().change_scene_to_file("res://scenes/menu.tscn")
 

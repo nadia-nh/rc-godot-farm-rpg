@@ -19,6 +19,16 @@ func _ready() -> void:
 		_connect_to_signals()
 		_initialize_buttons()
 
+func any_element_hovered() -> bool:
+	if GameManager.in_panting_mode():
+		return false
+
+	for button in item_buttons:
+		if button.is_hovered():
+			return true
+
+	return next_day_button.is_hovered() or money_display.is_hovered()
+
 func _connect_to_signals() -> void:
 	GameManager.item_selected.connect(_on_item_selected)
 	GameManager.day_changed.connect(_on_day_changed)

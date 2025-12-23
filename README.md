@@ -1,5 +1,6 @@
-# rc-godot-farm-rpg
-Farming RPG using Godot
+## RC Godot Farming Game
+
+<img width="640" height="480" alt="pico-8 screenshot" src="screenshot-rc-godot-farm-rpg.png" />
 
 ## Resources
 

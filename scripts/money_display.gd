@@ -33,9 +33,21 @@ func update_money(quantity: int) -> void:
 		text += str(quantity)
 
 	money_text.text = text
+	_show_money_updated()
 
 func is_hovered() -> bool:
 	return _is_hovered
+
+func _show_money_updated() -> void:
+	_highlight_money_display()
+	var timer = get_tree().create_timer(0.1)
+	timer.timeout.connect(_unhighlight_money_display)
+
+func _highlight_money_display() -> void:
+	self.self_modulate = Color("#F7AC38")
+
+func _unhighlight_money_display() -> void:
+	self.self_modulate = Color("#FFFFFF")
 
 func _on_mouse_entered() -> void:
 	_is_hovered = true

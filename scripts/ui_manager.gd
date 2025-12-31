@@ -66,7 +66,11 @@ func _on_seed_quantity_updated(
 	crop_resource_for_seed: CropResource, quantity: int) -> void:
 	for button in item_buttons:
 		if button.get_item().contains_seed(crop_resource_for_seed):
-			button.update_quantity_text(quantity)
+			if quantity <= 0:
+				var seed_price = button.get_item().get_crop_resource().seed_price
+				button.update_price_text(seed_price)
+			else:
+				button.update_quantity_text(quantity)
 
 # Inform game manager that the item was selected
 func _on_item_pressed(button: ItemButton) -> void:

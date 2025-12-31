@@ -31,3 +31,6 @@ func show_button_unselected() -> void:
 
 func update_quantity_text(quantity: int) -> void:
 	quantity_text.text = str(quantity)
+
+func update_price_text(price: int) -> void:
+	quantity_text.text = "$" + str(price)

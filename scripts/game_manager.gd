@@ -13,6 +13,8 @@ signal day_advanced(progress: float)
 signal money_updated(quantity: int)
 @warning_ignore("unused_signal")
 signal seed_quantity_updated(crop_resource_for_seed: CropResource, quantity: int)
+@warning_ignore("unused_signal")
+signal seed_purchase_attempted(crop_resource_for_seed: CropResource, bought: bool)
 
 # Item Signals
 @warning_ignore("unused_signal")

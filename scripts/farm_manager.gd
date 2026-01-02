@@ -106,12 +106,16 @@ func _on_item_used() -> void:
 			if _grassland.water_tile(player_pos):
 				GameManager.consume_daily_action()
 		ItemData.Tool.NONE:
-			if can_use_crop_seed(item.get_crop_resource()):
-				if _grassland.plant_tile(item.get_crop_resource(), player_pos):
-					use_seed(item.get_crop_resource())
+			var crop = item.get_crop_resource()
+			if can_use_crop_seed(crop):
+				if _grassland.plant_tile(crop, player_pos):
+					use_seed(crop)
 					GameManager.consume_daily_action()
-			elif can_buy_seed(item.get_crop_resource()):
-				buy_seed(item.get_crop_resource())
+			elif can_buy_seed(crop):
+				buy_seed(crop)
+				GameManager.seed_purchase_attempted.emit(crop, true)
+			else:
+				GameManager.seed_purchase_attempted.emit(crop, false)
 
 func _on_player_moved(input_direction: Vector2) -> void:
 	_player.update_input_direction(input_direction)

@@ -29,6 +29,12 @@ func show_button_selected() -> void:
 func show_button_unselected() -> void:
 	self.self_modulate = Color("#FFFFFF")
 
+func show_button_action_success() -> void:
+	self.self_modulate = Color("#99E65F")
+
+func show_button_action_failure() -> void:
+	self.self_modulate = Color("#EA323C")
+
 func update_quantity_text(quantity: int) -> void:
 	quantity_text.text = str(quantity)
 

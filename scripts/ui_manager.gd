@@ -34,6 +34,7 @@ func _connect_to_signals() -> void:
 	GameManager.day_changed.connect(_on_day_changed)
 	GameManager.money_updated.connect(_on_money_updated)
 	GameManager.seed_quantity_updated.connect(_on_seed_quantity_updated)
+	GameManager.seed_purchase_attempted.connect(_on_seed_purchase_attempted)
 	next_day_button.pressed.connect(_on_next_day_pressed)
 
 func _initialize_buttons() -> void:
@@ -65,9 +66,10 @@ func _on_money_updated(quantity: int) -> void:
 func _on_seed_quantity_updated(
 	crop_resource_for_seed: CropResource, quantity: int) -> void:
 	for button in item_buttons:
-		if button.get_item().contains_seed(crop_resource_for_seed):
+		var item = button.get_item()
+		if item.contains_seed(crop_resource_for_seed):
 			if quantity <= 0:
-				var seed_price = button.get_item().get_crop_resource().seed_price
+				var seed_price = item.get_crop_resource().seed_price
 				button.update_price_text(seed_price)
 			else:
 				button.update_quantity_text(quantity)
@@ -82,3 +84,19 @@ func _on_next_day_pressed() -> void:
 
 func _button_has_item(button: ItemButton, item: ItemData.Item) -> bool:
 	return button.get_item().is_equal_to(item)
+
+func _on_seed_purchase_attempted(
+	crop_resource_for_seed: CropResource, bought: bool) -> void:
+	for button in item_buttons:
+		var item = button.get_item()
+		if item.contains_seed(crop_resource_for_seed):
+			_show_button_action_feedback(button, bought)
+
+func _show_button_action_feedback(button: ItemButton, success: bool) -> void:
+	if success:
+		button.show_button_action_success()
+	else:
+		button.show_button_action_failure()
+	
+	var timer = get_tree().create_timer(0.1)
+	timer.timeout.connect(button.show_button_selected)

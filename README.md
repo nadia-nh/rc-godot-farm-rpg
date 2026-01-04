@@ -1,6 +1,65 @@
 ## RC Godot Farming Game
 
-<img width="640" height="480" alt="pico-8 screenshot" src="screenshot-rc-godot-farm-rpg.png" />
+<img width="640" height="480" alt="godot-farming screenshot" src="screenshot-rc-godot-farm-rpg.png" />
+
+Farming game built at the [The Recurse Center](https://recurse.com) using [Godot](https://godotengine.org/) as a learning project.
+
+The player can prepare the soil, plant seeds, water crops, and harvest them once they are fully grown. Harvested crops are sold automatically, earning money that can be used to buy more seeds.
+
+Each day has a limited number of actions to encourage planning and progression. A day–night overlay provides visual feedback as time advances, and the currently selected item is highlighted in the UI.
+
+## Running the game
+
+Clone the repo:
+```
+git clone https://github.com/nadia-nh/rc-godot-farm-rpg.git
+cd rc-godot-farm-rpg
+```
+
+Run with Godot 4:
+
+Import the project, and run the main scene with the run project button or by pressing `F5`.
+
+Controls - Keyboard based:
+- Arrow keys – Move the player
+- e / enter / spacebar - Use the selected item
+- 1 - Select the hoe tool
+- 2 - Select the schythe tool
+- 3 - Select the watering can tool
+- 4 - Select the potato seeds
+- 5 - Select the turnip seeds
+- n – Advance to the next day
+
+Controls - Mouse based:
+- Arrow keys – Move the player
+- Clicking on the grass - Use the selected item
+- Clicking on an item button – Select a tool or seed
+- Clicking on the next Day button – Advance to the next day
+
+## How the Game Works
+
+The game is structured around a few core systems:
+
+- **GameManager (autoload)**  
+  Tracks global game state such as the current day, money, and selected item, and declares signals used across the system.
+
+- **FarmManager**  
+  Coordinates high-level farm interactions, such as planting crops, buying seeds, and translating player actions into tile updates.
+
+- **Grass / GrassTileData / CropNode / CropData**  
+  Handle the tile-based farming logic:
+  - `Grass` manages the tile map
+  - `GrassTileData` stores per-tile state (tilled, watered, crop reference)
+  - `CropNode` applies crop growth logic and updates sprites
+  - `CropData` stores crop state values
+
+- **InputDispatcher**  
+  Handles keyboard input and notifies the GameManager about relevant state updates (item selection, item use, day advancement).
+
+- **UILayer**  
+  Updates UI elements in response to game state changes, including item buttons, money display, and the next-day button.
+
+The project uses signals extensively to keep systems loosely coupled.
 
 ## Resources
 

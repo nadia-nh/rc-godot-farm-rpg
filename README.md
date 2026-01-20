@@ -2,7 +2,7 @@
 
 <img width="640" height="480" alt="godot-farming screenshot" src="screenshot-rc-godot-farm-rpg.png" />
 
-Farming game built at the [The Recurse Center](https://recurse.com) using [Godot](https://godotengine.org/) as a learning project.
+Farming game built at [The Recurse Center](https://recurse.com) using [Godot](https://godotengine.org/) as a learning project.
 
 The player can prepare the soil, plant seeds, water crops, and harvest them once they are fully grown. Harvested crops are sold automatically, earning money that can be used to buy more seeds.
 
@@ -11,7 +11,7 @@ Each day has a limited number of actions to encourage planning and progression. 
 ## Running the game
 
 Clone the repo:
-```
+```bash
 git clone https://github.com/nadia-nh/rc-godot-farm-rpg.git
 cd rc-godot-farm-rpg
 ```

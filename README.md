@@ -1,4 +1,4 @@
-## RC Godot Farming Game
+## Plant and Prosper 🌱
 
 <img width="640" height="480" alt="godot-farming screenshot" src="screenshot-rc-godot-farm-rpg.png" />
 

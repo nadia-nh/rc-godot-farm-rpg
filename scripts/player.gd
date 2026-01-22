@@ -9,7 +9,10 @@ extends CharacterBody2D
 
 var facing_direction: Vector2 = Vector2.DOWN
 
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var _animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+
+func _ready() -> void:
+	assert(_animated_sprite != null, "AnimatedSprite node not found")
 
 func _physics_process(_delta):
 	move_and_slide()
@@ -24,10 +27,10 @@ func stop_moving():
 	_set_idle_animation()
 
 func _set_idle_animation():
-	animated_sprite.play("idle_" + _get_player_direction())
+	_animated_sprite.play("idle_" + _get_player_direction())
 
 func _set_walk_animation():
-	animated_sprite.play("walk_" + _get_player_direction())
+	_animated_sprite.play("walk_" + _get_player_direction())
 
 # Determines the movement direction based on whether movement is horizontal
 # or vertical, and whether the facing value is positive or negative.

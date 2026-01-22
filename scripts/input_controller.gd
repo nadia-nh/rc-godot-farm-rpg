@@ -8,10 +8,11 @@ extends Node
 var item_actions : Array[String]
 var player_actions : Array[String]
 
-@onready var farm_manager = $"../FarmManager"
-@onready var ui_manager = $"../UIManager"
+@onready var _farm_manager = $"../FarmManager"
 
 func _ready() -> void:
+	assert(_farm_manager != null, "FarmManager node not found")
+
 	item_actions = [
 		"tool_hoe", "tool_scythe", "tool_water", "seed_potato", "seed_turnip"
 	]
@@ -38,7 +39,7 @@ func _physics_process(_delta):
 	for action in item_actions:
 		if Input.is_action_just_pressed(action):
 			GameManager.item_selected.emit(
-				farm_manager.get_item_from_action(action))
+				_farm_manager.get_item_from_action(action))
 
 	for action in player_actions:
 		if Input.is_action_pressed(action):

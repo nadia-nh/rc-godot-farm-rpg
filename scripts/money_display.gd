@@ -6,10 +6,10 @@ extends TextureRect
 
 const MAX_QUANTITY: int = 10_000_000
 
-@onready var money_text = $MoneyText
+@onready var _money_text = $MoneyText
 
 func _ready() -> void:
-	pass
+	assert(_money_text != null, "MoneyText node not found")
 
 # Shows the player's money (capped at 10 million) and formats it so
 # the text fits within the width of the asset.
@@ -30,7 +30,7 @@ func update_money(quantity: int) -> void:
 	else:
 		text += str(quantity)
 
-	money_text.text = text
+	_money_text.text = text
 	_show_money_updated()
 
 func _show_money_updated() -> void:

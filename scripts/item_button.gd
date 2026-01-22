@@ -11,12 +11,11 @@ extends TextureButton
 
 var _player_item : ItemData.Item
 
-@onready var quantity_text : Label = $Text
-
-func _init() -> void:
-	pass
+@onready var _quantity_text : Label = $Text
 
 func _ready() -> void:
+	assert(_quantity_text != null, "QuantityText node not found")
+
 	var player_seed = ItemData.Seed.new(crop_resource)
 	_player_item = ItemData.Item.new(tool, player_seed)
 
@@ -36,7 +35,7 @@ func show_button_action_failure() -> void:
 	self.self_modulate = Color("#EA323C")
 
 func update_quantity_text(quantity: int) -> void:
-	quantity_text.text = str(quantity)
+	_quantity_text.text = str(quantity)
 
 func update_price_text(price: int) -> void:
-	quantity_text.text = "$" + str(price)
+	_quantity_text.text = "$" + str(price)

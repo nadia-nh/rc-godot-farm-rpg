@@ -6,6 +6,8 @@ extends Control
 
 func _ready() -> void:
 	assert(_main_scene != null, "Main scene failed to load")
+	assert(_continue_button != null, "ContinueButton node not found")
+	assert(_exit_button != null, "ExitButton node not found")
 
 	_continue_button.pressed.connect(_on_continue_button_pressed)
 	_exit_button.pressed.connect(_on_exit_button_pressed)

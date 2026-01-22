@@ -20,6 +20,8 @@ func _init() -> void:
 func _ready() -> void:
 	assert(_potato_resource != null, "Potato resource failed to load")
 	assert(_turnip_resource != null, "Turnip resource failed to load")
+	assert(_grassland != null, "GrassLand node not found")
+	assert(_player != null, "Player node not found")
 
 	GameManager.day_changed.connect(_on_day_changed)
 	GameManager.item_used.connect(_on_item_used)

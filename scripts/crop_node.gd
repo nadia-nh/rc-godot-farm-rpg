@@ -15,6 +15,9 @@ func _ready() -> void:
 	pass
 
 func initialize(crop_resource: CropResource, is_tile_watered : bool):
+	var crop_name = crop_resource.crop_name
+	assert(crop_resource.crop_assets.size() > 0,
+		"The " + crop_name + " crop resource doesn't have any crop assets")
 	_crop_resource = crop_resource
 	_days_to_grow = _crop_resource.crop_assets.size() - 1
 	_is_watered = is_tile_watered

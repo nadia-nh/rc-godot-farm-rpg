@@ -20,7 +20,8 @@ func _ready() -> void:
 	]
 
 func _item_use_valid() -> bool:
-	return not ui_manager.any_element_hovered()
+	var hovered := get_viewport().gui_get_hovered_control()
+	return hovered == null
 
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("use_item"):

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CropResource" load_steps=7 format=3 uid="uid://6w5vw3dwptgg"]
 
-[ext_resource type="Script" path="res://scripts/crop_resource.gd" id="1_2pp4k"]
+[ext_resource type="Script" uid="uid://hd8kfwmv2s2l" path="res://scripts/crop_resource.gd" id="1_2pp4k"]
 [ext_resource type="Texture2D" uid="uid://cv8ypc0fv888q" path="res://assets/Turnip/turnip_growth_0.png" id="1_n08m5"]
 [ext_resource type="Texture2D" uid="uid://ln5xukaobotv" path="res://assets/Turnip/turnip_growth_1.png" id="2_fb1q3"]
 [ext_resource type="Texture2D" uid="uid://d2vexdohj35wq" path="res://assets/Turnip/turnip_growth_2.png" id="3_avv2o"]

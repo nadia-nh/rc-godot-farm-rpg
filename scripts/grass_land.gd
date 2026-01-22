@@ -10,7 +10,7 @@ const GRASS_INDEX = 0
 const TILLED_GRASS_INDEX = 1
 const TILLED_WATERED_INDEX = 2
 
-var _crop_scene: PackedScene = preload("res://Scenes/crop_node.tscn")
+var _crop_scene: PackedScene = preload("res://scenes/crop_node.tscn")
 var _tile_state_at_pos: Dictionary[Vector2i, GrassTileState]
 var _watered_tiles : Dictionary[Vector2i, GrassTileState]
 

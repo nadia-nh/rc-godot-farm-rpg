@@ -18,6 +18,9 @@ func _init() -> void:
 	pass
 
 func _ready() -> void:
+	assert(_potato_resource != null, "Potato resource failed to load")
+	assert(_turnip_resource != null, "Turnip resource failed to load")
+
 	GameManager.day_changed.connect(_on_day_changed)
 	GameManager.item_used.connect(_on_item_used)
 	GameManager.player_moved.connect(_on_player_moved)

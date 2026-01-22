@@ -5,6 +5,8 @@ extends Control
 @onready var _exit_button = $ExitButton
 
 func _ready() -> void:
+	assert(_main_scene != null, "Main scene failed to load")
+
 	_continue_button.pressed.connect(_on_continue_button_pressed)
 	_exit_button.pressed.connect(_on_exit_button_pressed)
 

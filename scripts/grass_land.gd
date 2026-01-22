@@ -17,6 +17,8 @@ var _watered_tiles : Dictionary[Vector2i, GrassTileState]
 @onready var _tile_map: TileMapLayer = $GrassTileMap
 
 func _ready():
+	assert(_crop_scene != null, "Crop scene failed to load")
+
 	for cell in _tile_map.get_used_cells():
 		_tile_state_at_pos[cell] = GrassTileState.new()
 

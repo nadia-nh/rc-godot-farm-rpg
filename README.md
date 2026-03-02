@@ -9,7 +9,7 @@ The player can prepare the soil, plant seeds, water crops, and harvest them once
 Each day has a limited number of actions to encourage planning and progression. A day–night overlay provides visual feedback as time advances, and the currently selected item is highlighted in the UI. Try out the game [here](https://forgepixel.itch.io/plant-and-prosper).
 
 
-## Running the game
+## Running the game locally
 
 Clone the repo:
 ```bash
